@@ -1,0 +1,39 @@
+{
+  "name": "gce-images",
+  "version": "0.0.0",
+  "description": "Get a list of globally available Google Compute Engine images",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha --timeout 5000"
+  },
+  "keywords": [
+    "gce",
+    "google",
+    "compute",
+    "engine",
+    "cloud",
+    "images",
+    "ubuntu",
+    "linux",
+    "redhat",
+    "rhel",
+    "opensuse",
+    "suse",
+    "debian",
+    "coreos",
+    "centos"
+  ],
+  "repository": "stephenplusplus/gce-images",
+  "author": "Stephen Sawchuk <sawchuk@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "mocha": "^2.2.5"
+  },
+  "dependencies": {
+    "arrify": "^1.0.0",
+    "async": "^1.4.2",
+    "google-auto-auth": "^0.1.0",
+    "got": "^4.1.1",
+    "object-assign": "^3.0.0"
+  }
+}
