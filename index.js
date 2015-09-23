@@ -11,7 +11,8 @@ function GCEImages(config) {
     return new GCEImages(config);
   }
 
-  this._auth = googleAuth(config);
+  config = config || {};
+  this._auth = config.authClient || googleAuth(config);
   this.OS_URLS = GCEImages.OS_URLS;
 }
 

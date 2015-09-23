@@ -163,7 +163,14 @@ A map of OS names to their Google APIs public image URL.
 
 - Type: `Object`
 
-See the above section on Authorization. This object is only necessary if automatic authentication is not available in your environment. See the [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth) documentation for the accepted properties.
+See the above section on Authorization. This object is only necessary if automatic authentication is not available in your environment. See the [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth#authconfig) documentation for the accepted properties.
+
+###### authConfig.authClient
+
+- Type: [`GoogleAutoAuth`](http://gitnpm.com/google-auto-auth)
+- *Optional*
+
+If you want to re-use an auth client from [google-auto-auth](http://gitnpm.com/google-auto-auth), pass an instance here.
 
 #### images.getAll([options], callback)
 #### images.getLatest([options], callback)
