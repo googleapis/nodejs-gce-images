@@ -12,6 +12,7 @@ function GCEImages(config) {
   }
 
   config = config || {};
+  config.scopes = ['https://www.googleapis.com/auth/compute'];
   this._auth = config.authClient || googleAuth(config);
   this.OS_URLS = GCEImages.OS_URLS;
 }
