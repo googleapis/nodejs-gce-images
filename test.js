@@ -89,7 +89,10 @@ describe('gce-images', function () {
     it('should get the latest image for a specific OS version', function (done) {
       var osName = 'ubuntu-1410';
 
-      gceImages.getLatest(osName, function (err, image) {
+      gceImages.getLatest({
+        osNames: [osName],
+        deprecated: true
+      }, function (err, image) {
         assert.ifError(err);
         assert.strictEqual(typeof image, 'object');
         assert(image.selfLink.indexOf(osName) > -1);
