@@ -19,6 +19,7 @@ function GCEImages(config) {
 
 GCEImages.OS_URLS = {
   centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+  'container-vm': 'https://www.googleapis.com/compute/v1/projects/google-containers/global/images',
   coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
   debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
   redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
@@ -31,6 +32,9 @@ GCEImages.OS_URLS = {
 GCEImages.OS_TO_URL = {
   centos: GCEImages.OS_URLS.centos,
   'centos-cloud': GCEImages.OS_URLS.centos,
+
+  'container-vm': GCEImages.OS_URLS['container-vm'],
+  'google-containers': GCEImages.OS_URLS['container-vm'],
 
   coreos: GCEImages.OS_URLS.coreos,
   'coreos-cloud': GCEImages.OS_URLS.coreos,
