@@ -110,6 +110,7 @@ images.OS_URLS; // also available on require('gce-images').OS_URLS;
 /*
   {
     centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+    'container-vm': 'https://www.googleapis.com/compute/v1/projects/google-containers/global/images',
     coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
     debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
     redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
@@ -137,6 +138,7 @@ images.getLatest('ubuntu', function (err, image) {});
 #### Accepted OS names
 
 - `centos` (also `centos-cloud`)
+- `container-vm` (also `google-containers`)
 - `coreos` (also `coreos-cloud`)
 - `debian` (also `debian-cloud`)
 - `redhat` (also `rhel`, `rhel-cloud`)
