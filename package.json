@@ -3,6 +3,9 @@
   "version": "0.2.2",
   "description": "Get a list of globally available Google Compute Engine images",
   "main": "index.js",
+  "files": [
+    "index.js"
+  ],
   "scripts": {
     "test": "mocha --timeout 5000"
   },
