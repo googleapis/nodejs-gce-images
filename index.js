@@ -215,9 +215,19 @@ GCEImages.prototype._parseOsInput = function (os) {
     url: ''
   };
 
+  var project = false;
+  var hasProject = false;
+
   if (GCEImages.OS_TO_URL[os]) {
     osParts.name = os;
   } else {
+
+    // Cut out project name if provided.
+    hasProject = os.lastIndexOf("@") !== 0;
+    if(hasProject){
+      project = os.substr(0, os.lastIndexOf("@"));
+      os = os.substr(os.lastIndexOf("@") + 1);
+    }
     os.split('-').forEach(function (part) {
       var hasName = osParts.name.length > 0;
       var hasVersion = osParts.version.length > 0;
@@ -243,8 +253,11 @@ GCEImages.prototype._parseOsInput = function (os) {
     });
   }
 
-  osParts.url = GCEImages.OS_TO_URL[osParts.name];
-
+  if(hasProject) {
+    osParts.url = 'https://www.googleapis.com/compute/v1/projects/' + project + '/global/images';
+  } else {
+    osParts.url = GCEImages.OS_TO_URL[osParts.name];
+  }
   if (!osParts.url) {
     throw new Error([
       'Cannot find ' + os,
