@@ -223,10 +223,10 @@ GCEImages.prototype._parseOsInput = function (os) {
   } else {
 
     // Cut out project name if provided.
-    hasProject = os.lastIndexOf("@") !== 0;
+    hasProject = os.indexOf("@") !== -1;
     if(hasProject){
-      project = os.substr(0, os.lastIndexOf("@"));
-      os = os.substr(os.lastIndexOf("@") + 1);
+      project = os.substr(0, os.indexOf("@"));
+      os = os.substr(os.indexOf("@") + 1);
     }
     os.split('-').forEach(function (part) {
       var hasName = osParts.name.length > 0;
