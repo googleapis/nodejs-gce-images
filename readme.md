@@ -78,6 +78,31 @@ images.getLatest('ubuntu', function (err, image) {
 });
 ```
 
+#### Get the latest image for a specific OS from your project
+
+```js
+images.getLatest('your-project-id-or-name/ubuntu', function (err, image) {
+/*
+  image = {
+    kind: 'compute#image',
+    selfLink: 'https://www.googleapis.com/compute/v1/projects/your-project-id-or-name/global/images/ubuntu-1504-vivid-v20150616a',
+    id: '6610082300127119636',
+    creationTimestamp: '2015-06-17T02:03:55.825-07:00',
+    name: 'ubuntu-1504-vivid-v20150616a',
+    description: 'Canonical, Ubuntu, 15.04, amd64 vivid image built on 2015-06-16',
+    sourceType: 'RAW',
+    rawDisk: { source: '', containerType: 'TAR' },
+    status: 'READY',
+    archiveSizeBytes: '806558757',
+    diskSizeGb: '10',
+    licenses: [
+      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
+    ]
+  }
+*/
+});
+```
+
 #### Get the latest image for a specific version of an OS
 
 ```js
