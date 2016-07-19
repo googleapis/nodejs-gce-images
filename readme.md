@@ -81,7 +81,7 @@ images.getLatest('ubuntu', function (err, image) {
 #### Get the latest image for a specific OS from your project
 
 ```js
-images.getLatest('your-project-id-or-name@ubuntu', function (err, image) {
+images.getLatest('your-project-id-or-name/ubuntu', function (err, image) {
 /*
   image = {
     kind: 'compute#image',
