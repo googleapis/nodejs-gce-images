@@ -223,7 +223,7 @@ GCEImages.prototype._parseOsInput = function (os) {
   } else {
 
     hasProject = /\//.test(os);
-    if(hasProject){
+    if (hasProject) {
       var projectAndOs = os.split('/');
       project = projectAndOs[0];
       os = projectAndOs[1];
