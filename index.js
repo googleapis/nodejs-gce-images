@@ -274,8 +274,8 @@ GCEImages.prototype._filterDeprecated = function (image) {
 };
 
 GCEImages.prototype._sortNewestFirst = function (imageA, imageB) {
-  return imageA.creationTimestamp < imageB.creationTimestamp ? 1
-       : imageA.creationTimestamp > imageB.createTimestamp ? -1
+  return imageA.creationTimestamp > imageB.creationTimestamp ? 1
+       : imageA.creationTimestamp < imageB.creationTimestamp ? -1
        : 0;
 };
 
