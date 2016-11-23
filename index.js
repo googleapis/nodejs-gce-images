@@ -128,7 +128,7 @@ GCEImages.prototype.getLatest = function (options, callback) {
     }
 
     if (Array.isArray(images)) {
-      images = images.sort(self._sortNewestFirst).pop();
+      images = images.sort(self._sortNewestFirst).shift();
     } else {
       for (var image in images) {
         images[image].sort(self._sortNewestFirst).splice(1);
@@ -275,7 +275,7 @@ GCEImages.prototype._filterDeprecated = function (image) {
 
 GCEImages.prototype._sortNewestFirst = function (imageA, imageB) {
   return imageA.creationTimestamp < imageB.creationTimestamp ? 1
-       : imageA.creationTimestamp > imageB.createTimestamp ? -1
+       : imageA.creationTimestamp > imageB.creationTimestamp ? -1
        : 0;
 };
 
