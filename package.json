@@ -1,6 +1,6 @@
 {
   "name": "gce-images",
-  "version": "0.3.3",
+  "version": "0.3.4",
   "description": "Get a list of globally available Google Compute Engine images",
   "main": "index.js",
   "files": [
