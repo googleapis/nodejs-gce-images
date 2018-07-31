@@ -8,7 +8,6 @@
 'use strict';
 
 var arrify = require('arrify');
-var assign = require('object-assign');
 var async = require('async');
 var googleAuth = require('google-auto-auth');
 var got = require('got');
@@ -93,7 +92,7 @@ GCEImages.prototype.getAll = function (options, callback) {
     osNamesToImages,
 
     function (_, osName, next) {
-      var singleOsOptions = assign({}, options, { osNames: [osName] });
+      var singleOsOptions = Object.assign({}, options, { osNames: [osName] });
       self._getAllByOS(singleOsOptions, function (err, images) {
         osNamesToImages[osName] = images || [];
         next(err || null);
@@ -210,7 +209,7 @@ GCEImages.prototype._parseArguments = function (options, callback) {
     parsedArguments.callback = options;
   }
 
-  parsedArguments.options = assign(defaultOptions, parsedArguments.options);
+  parsedArguments.options = Object.assign(defaultOptions, parsedArguments.options);
   parsedArguments.options.osNames = arrify(parsedArguments.options.osNames);
 
   return parsedArguments;
