@@ -2,9 +2,9 @@
   "name": "gce-images",
   "version": "0.3.4",
   "description": "Get a list of globally available Google Compute Engine images",
-  "main": "index.js",
+  "main": "src/index.js",
   "files": [
-    "index.js"
+    "src/"
   ],
   "scripts": {
     "lint": "jshint *.js",
@@ -38,7 +38,6 @@
     "arrify": "^1.0.0",
     "async": "^1.5.2",
     "google-auto-auth": "^0.7.1",
-    "got": "^4.1.1",
-    "object-assign": "^3.0.0"
+    "got": "^4.1.1"
   }
 }

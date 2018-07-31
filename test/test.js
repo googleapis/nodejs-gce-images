@@ -10,7 +10,7 @@
 var assert = require('assert');
 var async = require('async');
 
-var gceImages = require('./index.js')();
+var gceImages = require('../src')();
 
 describe('gce-images', function () {
   var allImagesByOsName = {
