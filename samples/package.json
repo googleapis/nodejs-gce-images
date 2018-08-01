@@ -1,0 +1,19 @@
+{
+  "description": "Samples for the gce-image npm module.",
+  "license": "MIT",
+  "author": "Google LLC",
+  "engines": {
+    "node": ">=8"
+  },
+  "repository": "GoogleCloudPlatform/gce-images",
+  "private": true,
+  "scripts": {
+    "test": "mocha system-test"
+  },
+  "dependencies": {
+    "gce-images": "*"
+  },
+  "devDependencies": {
+    "mocha": "^5.2.0"
+  }
+}
