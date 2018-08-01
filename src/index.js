@@ -24,15 +24,24 @@ function GCEImages(config) {
 }
 
 GCEImages.OS_URLS = {
-  centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
-  'container-vm': 'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
-  coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
-  debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
-  redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
-  opensuse: 'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
-  suse: 'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
-  ubuntu: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
-  windows: 'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images'
+  centos:
+    'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+  'container-vm':
+    'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
+  coreos:
+    'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
+  debian:
+    'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
+  redhat:
+    'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
+  opensuse:
+    'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
+  suse:
+    'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
+  ubuntu:
+    'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
+  windows:
+    'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
 };
 
 GCEImages.OS_TO_URL = {
@@ -41,7 +50,7 @@ GCEImages.OS_TO_URL = {
 
   'container-vm': GCEImages.OS_URLS['container-vm'],
   'google-containers': GCEImages.OS_URLS['container-vm'],
-  'cos': GCEImages.OS_URLS['container-vm'],
+  cos: GCEImages.OS_URLS['container-vm'],
 
   coreos: GCEImages.OS_URLS.coreos,
   'coreos-cloud': GCEImages.OS_URLS.coreos,
@@ -64,7 +73,7 @@ GCEImages.OS_TO_URL = {
   'ubuntu-os-cloud': GCEImages.OS_URLS.ubuntu,
 
   windows: GCEImages.OS_URLS.windows,
-  'windows-cloud': GCEImages.OS_URLS.windows
+  'windows-cloud': GCEImages.OS_URLS.windows,
 };
 
 /**
@@ -76,14 +85,14 @@ GCEImages.OS_TO_URL = {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getAll = function (options, callback) {
+GCEImages.prototype.getAll = function(options, callback) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
   options = parsedArguments.options;
   callback = parsedArguments.callback;
 
-  var osNamesToImages = options.osNames.reduce(function (acc, osName) {
+  var osNamesToImages = options.osNames.reduce(function(acc, osName) {
     acc[osName] = [];
     return acc;
   }, {});
@@ -91,15 +100,15 @@ GCEImages.prototype.getAll = function (options, callback) {
   async.forEachOf(
     osNamesToImages,
 
-    function (_, osName, next) {
-      var singleOsOptions = Object.assign({}, options, { osNames: [osName] });
-      self._getAllByOS(singleOsOptions, function (err, images) {
+    function(_, osName, next) {
+      var singleOsOptions = Object.assign({}, options, {osNames: [osName]});
+      self._getAllByOS(singleOsOptions, function(err, images) {
         osNamesToImages[osName] = images || [];
         next(err || null);
       });
     },
 
-    function (err) {
+    function(err) {
       if (err) {
         callback(err);
         return;
@@ -110,7 +119,8 @@ GCEImages.prototype.getAll = function (options, callback) {
       } else {
         callback(null, osNamesToImages);
       }
-    });
+    }
+  );
 };
 /**
  * Get all available images, but only return the newest one.
@@ -121,14 +131,14 @@ GCEImages.prototype.getAll = function (options, callback) {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getLatest = function (options, callback) {
+GCEImages.prototype.getLatest = function(options, callback) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
   options = parsedArguments.options;
   callback = parsedArguments.callback;
 
-  this.getAll(options, function (err, images) {
+  this.getAll(options, function(err, images) {
     if (err) {
       callback(err);
       return;
@@ -146,7 +156,7 @@ GCEImages.prototype.getLatest = function (options, callback) {
   });
 };
 
-GCEImages.prototype._getAllByOS = function (options, callback) {
+GCEImages.prototype._getAllByOS = function(options, callback) {
   var self = this;
 
   var osParts = this._parseOsInput(options.osNames[0]);
@@ -154,20 +164,21 @@ GCEImages.prototype._getAllByOS = function (options, callback) {
   var reqOpts = {
     uri: osParts.url,
     json: true,
-    query: {}
+    query: {},
   };
 
   if (osParts.version.length > 0) {
-    reqOpts.query.filter = 'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
+    reqOpts.query.filter =
+      'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
   }
 
-  this._auth.authorizeRequest(reqOpts, function (err, authorizedReqOpts) {
+  this._auth.authorizeRequest(reqOpts, function(err, authorizedReqOpts) {
     if (err) {
       callback(err);
       return;
     }
 
-    got(reqOpts.uri, authorizedReqOpts, function (err, resp) {
+    got(reqOpts.uri, authorizedReqOpts, function(err, resp) {
       if (err) {
         callback(err);
         return;
@@ -188,20 +199,20 @@ GCEImages.prototype._getAllByOS = function (options, callback) {
   });
 };
 
-GCEImages.prototype._parseArguments = function (options, callback) {
+GCEImages.prototype._parseArguments = function(options, callback) {
   var defaultOptions = {
     deprecated: false,
-    osNames: Object.keys(GCEImages.OS_URLS)
+    osNames: Object.keys(GCEImages.OS_URLS),
   };
 
   var parsedArguments = {
     options: options,
-    callback: callback
+    callback: callback,
   };
 
   if (typeof options === 'string') {
     parsedArguments.options = {
-      osNames: [options]
+      osNames: [options],
     };
   }
 
@@ -209,17 +220,20 @@ GCEImages.prototype._parseArguments = function (options, callback) {
     parsedArguments.callback = options;
   }
 
-  parsedArguments.options = Object.assign(defaultOptions, parsedArguments.options);
+  parsedArguments.options = Object.assign(
+    defaultOptions,
+    parsedArguments.options
+  );
   parsedArguments.options.osNames = arrify(parsedArguments.options.osNames);
 
   return parsedArguments;
 };
 
-GCEImages.prototype._parseOsInput = function (os) {
+GCEImages.prototype._parseOsInput = function(os) {
   var osParts = {
     name: '',
     version: '',
-    url: ''
+    url: '',
   };
 
   var project = false;
@@ -228,14 +242,13 @@ GCEImages.prototype._parseOsInput = function (os) {
   if (GCEImages.OS_TO_URL[os]) {
     osParts.name = os;
   } else {
-
     hasProject = /\//.test(os);
     if (hasProject) {
       var projectAndOs = os.split('/');
       project = projectAndOs[0];
       os = projectAndOs[1];
     }
-    os.split('-').forEach(function (part) {
+    os.split('-').forEach(function(part) {
       var hasName = osParts.name.length > 0;
       var hasVersion = osParts.version.length > 0;
 
@@ -248,7 +261,7 @@ GCEImages.prototype._parseOsInput = function (os) {
             osParts.name += !hasName ? part : '-' + part;
             break;
           }
-          /* falls through */
+        /* falls through */
         default:
           if (!hasName) {
             osParts.name = part;
@@ -261,29 +274,36 @@ GCEImages.prototype._parseOsInput = function (os) {
   }
 
   if (hasProject) {
-    osParts.url = 'https://www.googleapis.com/compute/v1/projects/' + project + '/global/images';
+    osParts.url =
+      'https://www.googleapis.com/compute/v1/projects/' +
+      project +
+      '/global/images';
   } else {
     osParts.url = GCEImages.OS_TO_URL[osParts.name];
   }
 
   if (!osParts.url) {
-    throw new Error([
-      'Cannot find ' + os,
-      'Expected one of: ' + Object.keys(GCEImages.OS_URLS).join(', ')
-    ].join('. '));
+    throw new Error(
+      [
+        'Cannot find ' + os,
+        'Expected one of: ' + Object.keys(GCEImages.OS_URLS).join(', '),
+      ].join('. ')
+    );
   }
 
   return osParts;
 };
 
-GCEImages.prototype._filterDeprecated = function (image) {
+GCEImages.prototype._filterDeprecated = function(image) {
   return !image.deprecated;
 };
 
-GCEImages.prototype._sortNewestFirst = function (imageA, imageB) {
-  return imageA.creationTimestamp < imageB.creationTimestamp ? 1
-       : imageA.creationTimestamp > imageB.creationTimestamp ? -1
-       : 0;
+GCEImages.prototype._sortNewestFirst = function(imageA, imageB) {
+  return imageA.creationTimestamp < imageB.creationTimestamp
+    ? 1
+    : imageA.creationTimestamp > imageB.creationTimestamp
+      ? -1
+      : 0;
 };
 
 module.exports = GCEImages;

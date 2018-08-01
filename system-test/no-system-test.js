@@ -7,5 +7,5 @@
 
 'use strict';
 
-// No samples yet
+// No system test yet
 

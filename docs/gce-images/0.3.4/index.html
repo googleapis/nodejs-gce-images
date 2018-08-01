@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>gce-images Index</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.default.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.lumen.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">gce-images</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-8">
+	
+		<div id="main">
+			
+
+	
+	
+
+
+
+    <h3>gce-images 0.3.4</h3>
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+
+
+    <section class="readme-section">
+        <article><h1>gce-images</h1><blockquote>
+<p>Get a list of globally available Google Compute Engine images</p>
+</blockquote>
+<pre class="prettyprint source lang-sh"><code>$ npm install --save gce-images</code></pre><pre class="prettyprint source lang-js"><code>var gceImages = require('gce-images');
+
+// Create a client (see below for more about authorization)
+var images = gceImages();
+
+images.getAll(function (err, images) {
+/*
+  images = {
+    centos: {
+      [
+        {
+          kind: 'compute#image',
+          selfLink: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-6-v20150710',
+          id: '2223645373384728207',
+          creationTimestamp: '2015-07-13T13:32:32.483-07:00',
+          name: 'centos-6-v20150710',
+          description: 'CentOS, CentOS, 6.6, x86_64 built on 2015-07-10',
+          sourceType: 'RAW',
+          rawDisk: [Object],
+          status: 'READY',
+          archiveSizeBytes: '1133229966',
+          diskSizeGb: '10'
+        },
+        // ...
+    },
+    coreos: {
+      // ...
+    },
+    debian: {
+      // ...
+    },
+    redhat: {
+      // ...
+    },
+    opensuse: {
+      // ...
+    },
+    suse: {
+      // ...
+    },
+    ubuntu: {
+      // ...
+    }
+  };
+*/
+});</code></pre><h4>Get the latest image for a specific OS</h4><pre class="prettyprint source lang-js"><code>images.getLatest('ubuntu', function (err, image) {
+/*
+  image = {
+    kind: 'compute#image',
+    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1504-vivid-v20150616a',
+    id: '6610082300127119636',
+    creationTimestamp: '2015-06-17T02:03:55.825-07:00',
+    name: 'ubuntu-1504-vivid-v20150616a',
+    description: 'Canonical, Ubuntu, 15.04, amd64 vivid image built on 2015-06-16',
+    sourceType: 'RAW',
+    rawDisk: { source: '', containerType: 'TAR' },
+    status: 'READY',
+    archiveSizeBytes: '806558757',
+    diskSizeGb: '10',
+    licenses: [
+      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
+    ]
+  }
+*/
+});</code></pre><h4>Get the latest image for a specific OS from your project</h4><pre class="prettyprint source lang-js"><code>images.getLatest('your-project-id-or-name/ubuntu', function (err, image) {
+/*
+  image = {
+    kind: 'compute#image',
+    selfLink: 'https://www.googleapis.com/compute/v1/projects/your-project-id-or-name/global/images/ubuntu-1504-vivid-v20150616a',
+    id: '6610082300127119636',
+    creationTimestamp: '2015-06-17T02:03:55.825-07:00',
+    name: 'ubuntu-1504-vivid-v20150616a',
+    description: 'Canonical, Ubuntu, 15.04, amd64 vivid image built on 2015-06-16',
+    sourceType: 'RAW',
+    rawDisk: { source: '', containerType: 'TAR' },
+    status: 'READY',
+    archiveSizeBytes: '806558757',
+    diskSizeGb: '10',
+    licenses: [
+      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
+    ]
+  }
+*/
+});</code></pre><h4>Get the latest image for a specific version of an OS</h4><pre class="prettyprint source lang-js"><code>images.getLatest('ubuntu-1404', function (err, image) {
+/*
+  image = {
+    kind: 'compute#image',
+    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1410-utopic-v20150625',
+    id: '7075003915689987469',
+    creationTimestamp: '2015-07-09T10:46:10.424-07:00',
+    name: 'ubuntu-1410-utopic-v20150625',
+    description: 'Canonical, Ubuntu, 14.10, amd64 utopic image built on 2015-06-25',
+    sourceType: 'RAW',
+    rawDisk: { source: '', containerType: 'TAR' },
+    status: 'READY',
+    archiveSizeBytes: '752874399',
+    diskSizeGb: '10',
+    licenses: [
+      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1410-utopic'
+    ]
+  }
+*/
+});</code></pre><h4>Get a map of OS names to their project's api URL</h4><pre class="prettyprint source lang-js"><code>images.OS_URLS; // also available on require('gce-images').OS_URLS;
+/*
+  {
+    centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+    'container-vm': 'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
+    coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
+    debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
+    redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
+    opensuse: 'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
+    suse: 'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
+    ubuntu: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
+    windows: 'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images'
+  }
+*/</code></pre><h4>Authorization</h4><p>This module uses <a href="https://github.com/stephenplusplus/google-auto-auth">google-auto-auth</a> to get the required access token. If you don't meet the <strong><a href="https://github.com/stephenplusplus/google-auto-auth#automatic-if">requirements for automatic authentication</a></strong>, you will need to provide the same configuration object detailed in that readme.</p>
+<pre class="prettyprint source lang-js"><code>var gceImages = require('gce-images');
+var images = gceImages({ keyFile: '/Users/stephen/dev/key.json' });
+
+images.getAll(function (err, images) {});
+images.getLatest('ubuntu', function (err, image) {});</code></pre><p><a name="os-names"></a></p>
+<h4>Accepted OS names</h4><ul>
+<li><code>centos</code> (also <code>centos-cloud</code>)</li>
+<li><code>container-vm</code> (also <code>google-containers</code>)</li>
+<li><code>coreos</code> (also <code>coreos-cloud</code>)</li>
+<li><code>debian</code> (also <code>debian-cloud</code>)</li>
+<li><code>redhat</code> (also <code>rhel</code>, <code>rhel-cloud</code>)</li>
+<li><code>opensuse</code> (also <code>opensuse-cloud</code>)</li>
+<li><code>suse</code> (also <code>suse-cloud</code>)</li>
+<li><code>ubuntu</code> (also <code>ubuntu-cloud</code>, <code>ubuntu-os-cloud</code>)</li>
+<li><code>windows</code> (also <code>windows-cloud</code>)</li>
+</ul>
+<p>All accepted names may be suffixed with a version, e.g. <code>ubuntu-1404</code>.</p>
+<h3>API</h3><h4>gceImages = require('gce-images')</h4><h5>gceImages.OS_URLS</h5><ul>
+<li>Type: <code>Object</code></li>
+</ul>
+<p>A map of OS names to their Google APIs public image URL.</p>
+<h4>images = gceImages([authConfig])</h4><h5>authConfig</h5><ul>
+<li>Type: <code>Object</code></li>
+</ul>
+<p>See the above section on Authorization. This object is only necessary if automatic authentication is not available in your environment. See the <a href="https://github.com/stephenplusplus/google-auto-auth#authconfig">google-auto-auth</a> documentation for the accepted properties.</p>
+<h6>authConfig.authClient</h6><ul>
+<li>Type: <a href="http://gitnpm.com/google-auto-auth"><code>GoogleAutoAuth</code></a></li>
+<li><em>Optional</em></li>
+</ul>
+<p>If you want to re-use an auth client from <a href="http://gitnpm.com/google-auto-auth">google-auto-auth</a>, pass an instance here.</p>
+<h4>images.getAll([options], callback)</h4><h4>images.getLatest([options], callback)</h4><h5>options</h5><ul>
+<li>Optional</li>
+<li>Type: <code>String</code> or <code>Object</code></li>
+</ul>
+<p>If a string, it is expanded to: <code>options = { osNames: [**string input**] }</code>.</p>
+<p>If not provided, the default <code>options</code> detailed below are used.</p>
+<h6>options.osNames</h6><ul>
+<li>Type: <code>String[]</code></li>
+<li>Default: <a href="#os-names">All</a></li>
+</ul>
+<p>All operating systems you wish to receive image metadata for. See <a href="#os-names">Accepted OS names</a>.</p>
+<h6>options.deprecated</h6><ul>
+<li>Type: <code>Boolean</code></li>
+<li>Default: <code>false</code></li>
+</ul>
+<p>Include deprecated image metadata in results.</p>
+<h5>callback(err, images)</h5><h6>callback.err</h6><ul>
+<li>Type: <code>Error</code></li>
+</ul>
+<p>An error that occurred during an API request or if no results match the provided OS name or version.</p>
+<h6>callback.images</h6><ul>
+<li>Type: <code>Object</code> or <code>Array</code></li>
+</ul>
+<p>With <code>getAll</code>:</p>
+<p>If only a single OS is being looked up, you will receive an array of all image metadata objects for that OS.</p>
+<p>If multiple OS names were given, you will receive an object keyed by the <a href="#os-names">OS name</a>. Each key will reference an array of metadata objects for that OS.</p>
+<p>With <code>getLatest</code>:</p>
+<p>If only a single OS is being looked up, you will receive its metadata object back.</p>
+<p>If multiple OS names were given, you will receive an object keyed by the <a href="#os-names">OS name</a>. Each key will reference a metadata object.</p></article>
+    </section>
+
+
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+		<div class="col-md-3">
+			<div id="toc" class="col-md-3 hidden-xs hidden-sm hidden-md"></div>
+		</div>
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2018 Google LLC
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : false,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>
