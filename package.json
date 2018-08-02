@@ -36,6 +36,7 @@
   "author": "Stephen Sawchuk <sawchuk@gmail.com>",
   "license": "MIT",
   "devDependencies": {
+    "codecov": "^3.0.4",
     "eslint": "^5.0.1",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-node": "^7.0.0",
