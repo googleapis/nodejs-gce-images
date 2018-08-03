@@ -8,7 +8,6 @@
 'use strict';
 
 var assert = require('assert');
-var async = require('async');
 
 var gceImages = require('../src')();
 
