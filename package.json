@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "arrify": "^1.0.0",
-    "async": "^1.5.2",
+    "async": "^2.0.0",
     "google-auto-auth": "^0.10.0",
     "got": "^4.1.1"
   }
