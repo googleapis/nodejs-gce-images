@@ -7,23 +7,22 @@
 
 'use strict';
 
-var arrify = require('arrify');
-var async = require('async');
-var googleAuth = require('google-auto-auth');
-var got = require('got');
+import * as arrify from 'arrify';
+import * as async from 'async';
+import * as googleAuth from 'google-auto-auth';
+import * as got from 'got';
 
-function GCEImages(config) {
-  if (!(this instanceof GCEImages)) {
-    return new GCEImages(config);
+export class GCEImages {
+  private _auth: any;
+  OS_URLS: any;
+  constructor(config?) {
+    config = config || {};
+    config.scopes = ['https://www.googleapis.com/auth/compute'];
+    this._auth = config.authClient || googleAuth(config);
+    this.OS_URLS = GCEImages.OS_URLS;
   }
 
-  config = config || {};
-  config.scopes = ['https://www.googleapis.com/auth/compute'];
-  this._auth = config.authClient || googleAuth(config);
-  this.OS_URLS = GCEImages.OS_URLS;
-}
-
-GCEImages.OS_URLS = {
+private static OS_URLS = {
   centos:
     'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
   'container-vm':
@@ -44,7 +43,7 @@ GCEImages.OS_URLS = {
     'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
 };
 
-GCEImages.OS_TO_URL = {
+private static OS_TO_URL = {
   centos: GCEImages.OS_URLS.centos,
   'centos-cloud': GCEImages.OS_URLS.centos,
 
@@ -85,7 +84,7 @@ GCEImages.OS_TO_URL = {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getAll = function(options, callback) {
+getAll(options, callback?) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
@@ -122,6 +121,7 @@ GCEImages.prototype.getAll = function(options, callback) {
     }
   );
 };
+
 /**
  * Get all available images, but only return the newest one.
  *
@@ -131,7 +131,7 @@ GCEImages.prototype.getAll = function(options, callback) {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getLatest = function(options, callback) {
+getLatest(options, callback?) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
@@ -156,12 +156,12 @@ GCEImages.prototype.getLatest = function(options, callback) {
   });
 };
 
-GCEImages.prototype._getAllByOS = function(options, callback) {
+_getAllByOS(options, callback) {
   var self = this;
 
   var osParts = this._parseOsInput(options.osNames[0]);
 
-  var reqOpts = {
+  var reqOpts: any = {
     uri: osParts.url,
     json: true,
     query: {},
@@ -178,13 +178,8 @@ GCEImages.prototype._getAllByOS = function(options, callback) {
       return;
     }
 
-    got(reqOpts.uri, authorizedReqOpts, function(err, resp) {
-      if (err) {
-        callback(err);
-        return;
-      }
-
-      var images = resp.items || [];
+    got(reqOpts.uri, authorizedReqOpts).then(resp => {
+      var images = resp.body.items || [];
 
       if (!options.deprecated) {
         images = images.filter(self._filterDeprecated);
@@ -195,11 +190,12 @@ GCEImages.prototype._getAllByOS = function(options, callback) {
       } else {
         callback(null, images);
       }
-    });
+    }, callback);
   });
-};
+  }
 
-GCEImages.prototype._parseArguments = function(options, callback) {
+
+_parseArguments(options, callback) {
   var defaultOptions = {
     deprecated: false,
     osNames: Object.keys(GCEImages.OS_URLS),
@@ -229,7 +225,7 @@ GCEImages.prototype._parseArguments = function(options, callback) {
   return parsedArguments;
 };
 
-GCEImages.prototype._parseOsInput = function(os) {
+_parseOsInput(os) {
   var osParts = {
     name: '',
     version: '',
@@ -294,16 +290,15 @@ GCEImages.prototype._parseOsInput = function(os) {
   return osParts;
 };
 
-GCEImages.prototype._filterDeprecated = function(image) {
+_filterDeprecated(image) {
   return !image.deprecated;
 };
 
-GCEImages.prototype._sortNewestFirst = function(imageA, imageB) {
+_sortNewestFirst(imageA, imageB) {
   return imageA.creationTimestamp < imageB.creationTimestamp
     ? 1
     : imageA.creationTimestamp > imageB.creationTimestamp
       ? -1
       : 0;
 };
-
-module.exports = GCEImages;
+}

@@ -7,10 +7,11 @@
 
 'use strict';
 
-var assert = require('assert');
-var async = require('async');
+import * as assert from 'assert';
+import * as async from 'async';
+import {GCEImages} from '../src';
 
-var gceImages = require('../src')();
+const gceImages = new GCEImages();
 
 describe('system tests', () => {
   var allImagesByOsName = {
@@ -81,13 +82,10 @@ describe('system tests', () => {
     it('should get only the latest image from every OS', function(done) {
       gceImages.getLatest(function(err, images) {
         assert.ifError(err);
-
         assert.strictEqual(typeof images, 'object');
-
         Object.keys(images).forEach(function(osName) {
           assert.strictEqual(images[osName].length, 1);
         });
-
         done();
       });
     });
