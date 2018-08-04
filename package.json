@@ -44,14 +44,14 @@
     "ink-docstrap": "^1.3.2",
     "intelli-espower-loader": "^1.0.1",
     "jsdoc": "^3.5.5",
-    "mocha": "^2.2.5",
+    "mocha": "^5.0.0",
     "nyc": "^12.0.2",
     "power-assert": "^1.6.0",
     "prettier": "^1.14.0"
   },
   "dependencies": {
     "arrify": "^1.0.0",
-    "async": "^1.5.2",
+    "async": "^2.0.0",
     "google-auto-auth": "^0.10.0",
     "got": "^4.1.1"
   }
