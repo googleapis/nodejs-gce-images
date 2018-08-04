@@ -7,9 +7,10 @@
 
 'use strict';
 
-var assert = require('assert');
+import * as assert from 'assert';
+import {GCEImages} from '../src';
 
-var gceImages = require('../src')();
+const gceImages = new GCEImages();
 
 describe('gce-images', function() {
   describe('_sortNewestFirst', function() {
