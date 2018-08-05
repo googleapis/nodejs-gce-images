@@ -9,16 +9,20 @@
 
 import * as arrify from 'arrify';
 import * as async from 'async';
-import * as googleAuth from 'google-auto-auth';
-import * as got from 'got';
+import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
+import { AxiosRequestConfig } from '../node_modules/axios';
+
+export interface GCEImagesConfig extends GoogleAuthOptions {
+  authClient?: GoogleAuth;
+}
 
 export class GCEImages {
-  private _auth: any;
-  OS_URLS: any;
-  constructor(config?) {
+  private _auth: GoogleAuth;
+  OS_URLS: typeof GCEImages.OS_URLS;
+  constructor(config?: GCEImagesConfig) {
     config = config || {};
     config.scopes = ['https://www.googleapis.com/auth/compute'];
-    this._auth = config.authClient || googleAuth(config);
+    this._auth = config.authClient || new GoogleAuth(config);
     this.OS_URLS = GCEImages.OS_URLS;
   }
 
@@ -161,39 +165,29 @@ _getAllByOS(options, callback) {
 
   var osParts = this._parseOsInput(options.osNames[0]);
 
-  var reqOpts: any = {
-    uri: osParts.url,
-    json: true,
-    query: {},
+  var reqOpts: AxiosRequestConfig = {
+    url: osParts.url,
+    params: {}
   };
 
   if (osParts.version.length > 0) {
-    reqOpts.query.filter =
+    reqOpts.params.filter =
       'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
   }
 
-  this._auth.authorizeRequest(reqOpts, function(err, authorizedReqOpts) {
-    if (err) {
-      callback(err);
-      return;
+  this._auth.request(reqOpts).then(resp => {
+    var images = resp.data.items || [];
+    if (!options.deprecated) {
+      images = images.filter(self._filterDeprecated);
     }
+    if (images.length === 0) {
+      callback(new Error('Could not find a suitable image.'));
+    } else {
+      callback(null, images);
+    }
+  }, callback);
 
-    got(reqOpts.uri, authorizedReqOpts).then(resp => {
-      var images = resp.body.items || [];
-
-      if (!options.deprecated) {
-        images = images.filter(self._filterDeprecated);
-      }
-
-      if (images.length === 0) {
-        callback(new Error('Could not find a suitable image.'));
-      } else {
-        callback(null, images);
-      }
-    }, callback);
-  });
   }
-
 
 _parseArguments(options, callback) {
   var defaultOptions = {
