@@ -5,12 +5,12 @@
 $ npm install --save gce-images
 ```
 ```js
-var gceImages = require('gce-images');
+const gceImages = require('gce-images');
 
 // Create a client (see below for more about authorization)
-var images = gceImages();
+const images = gceImages();
 
-images.getAll(function (err, images) {
+images.getAll((err, images) => {
 /*
   images = {
     centos: {
@@ -56,7 +56,7 @@ images.getAll(function (err, images) {
 #### Get the latest image for a specific OS
 
 ```js
-images.getLatest('ubuntu', function (err, image) {
+images.getLatest('ubuntu', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
@@ -81,7 +81,7 @@ images.getLatest('ubuntu', function (err, image) {
 #### Get the latest image for a specific OS from your project
 
 ```js
-images.getLatest('your-project-id-or-name/ubuntu', function (err, image) {
+images.getLatest('your-project-id-or-name/ubuntu', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
@@ -106,7 +106,7 @@ images.getLatest('your-project-id-or-name/ubuntu', function (err, image) {
 #### Get the latest image for a specific version of an OS
 
 ```js
-images.getLatest('ubuntu-1404', function (err, image) {
+images.getLatest('ubuntu-1404', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
@@ -152,11 +152,11 @@ images.OS_URLS; // also available on require('gce-images').OS_URLS;
 This module uses [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth) to get the required access token. If you don't meet the **[requirements for automatic authentication](https://github.com/stephenplusplus/google-auto-auth#automatic-if)**, you will need to provide the same configuration object detailed in that readme.
 
 ```js
-var gceImages = require('gce-images');
-var images = gceImages({ keyFile: '/Users/stephen/dev/key.json' });
+const gceImages = require('gce-images');
+const images = gceImages({ keyFile: '/Users/stephen/dev/key.json' });
 
-images.getAll(function (err, images) {});
-images.getLatest('ubuntu', function (err, image) {});
+images.getAll((err, images) => {});
+images.getLatest('ubuntu', (err, image) => {});
 ```
 
 <a name="os-names"></a>
