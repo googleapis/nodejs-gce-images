@@ -14,86 +14,79 @@ import {GCEImages} from '../src';
 const gceImages = new GCEImages();
 
 describe('system tests', () => {
-  var allImagesByOsName = {
+  const allImagesByOsName = {
     deprecated: {},
     stable: {},
   };
 
-  before(function(done) {
+  before(done => {
     // Get counts.
     async.forEachOf(
-      allImagesByOsName,
+        allImagesByOsName,
 
-      function(_, key, next) {
-        gceImages.getAll({deprecated: key === 'deprecated'}, function(
-          err,
-          images
-        ) {
-          if (err) {
-            next(err);
-            return;
-          }
+        (_, key, next) => {
+          gceImages.getAll(
+              {deprecated: key === 'deprecated'}, (err, images) => {
+                if (err) {
+                  next(err);
+                  return;
+                }
 
-          allImagesByOsName[key] = images;
-          next();
-        });
-      },
+                allImagesByOsName[key] = images;
+                next();
+              });
+        },
 
-      done
-    );
+        done);
   });
 
-  describe('all', function() {
-    it('should default to deprecated: false', function(done) {
-      gceImages.getAll(function(err, images) {
+  describe('all', () => {
+    it('should default to deprecated: false', done => {
+      gceImages.getAll((err, images) => {
         assert.ifError(err);
 
         assert.strictEqual(typeof images, 'object');
 
-        Object.keys(images).forEach(function(osName) {
+        Object.keys(images).forEach((osName) => {
           assert.strictEqual(
-            images[osName].length,
-            allImagesByOsName.stable[osName].length
-          );
+              images[osName].length, allImagesByOsName.stable[osName].length);
         });
 
         done();
       });
     });
 
-    it('should get all of the images available for a specific OS', function(done) {
-      var osName = 'ubuntu';
+    it('should get all of the images available for a specific OS', (done) => {
+      const osName = 'ubuntu';
 
-      gceImages.getAll(osName, function(err, images) {
+      gceImages.getAll(osName, (err, images) => {
         assert.ifError(err);
 
         assert(Array.isArray(images));
         assert.strictEqual(
-          images.length,
-          allImagesByOsName.stable[osName].length
-        );
+            images.length, allImagesByOsName.stable[osName].length);
 
         done();
       });
     });
   });
 
-  describe('latest', function() {
-    it('should get only the latest image from every OS', function(done) {
-      gceImages.getLatest(function(err, images) {
+  describe('latest', () => {
+    it('should get only the latest image from every OS', (done) => {
+      gceImages.getLatest((err, images) => {
         assert.ifError(err);
         assert.strictEqual(typeof images, 'object');
-        Object.keys(images).forEach(function(osName) {
+        Object.keys(images).forEach((osName) => {
           assert.strictEqual(images[osName].length, 1);
         });
         done();
       });
     });
 
-    it('should get the latest image for a specific OS', function(done) {
-      var osName = 'ubuntu';
+    it('should get the latest image for a specific OS', (done) => {
+      const osName = 'ubuntu';
 
-      gceImages.getLatest(osName, function(err, image) {
+      gceImages.getLatest(osName, (err, image) => {
         assert.ifError(err);
         assert.strictEqual(typeof image, 'object');
         assert(image.selfLink.indexOf(osName) > -1);
@@ -101,21 +94,20 @@ describe('system tests', () => {
       });
     });
 
-    it('should get the latest image for a specific OS version', function(done) {
-      var osName = 'ubuntu-1410';
+    it('should get the latest image for a specific OS version', (done) => {
+      const osName = 'ubuntu-1410';
 
       gceImages.getLatest(
-        {
-          osNames: [osName],
-          deprecated: true,
-        },
-        function(err, image) {
-          assert.ifError(err);
-          assert.strictEqual(typeof image, 'object');
-          assert(image.selfLink.indexOf(osName) > -1);
-          done();
-        }
-      );
+          {
+            osNames: [osName],
+            deprecated: true,
+          },
+          (err, image) => {
+            assert.ifError(err);
+            assert.strictEqual(typeof image, 'object');
+            assert(image.selfLink.indexOf(osName) > -1);
+            done();
+          });
     });
   });
 });
