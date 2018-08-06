@@ -7,23 +7,26 @@
 
 'use strict';
 
-var arrify = require('arrify');
-var async = require('async');
-var googleAuth = require('google-auto-auth');
-var got = require('got');
+import * as arrify from 'arrify';
+import * as async from 'async';
+import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
+import { AxiosRequestConfig } from '../node_modules/axios';
 
-function GCEImages(config) {
-  if (!(this instanceof GCEImages)) {
-    return new GCEImages(config);
-  }
-
-  config = config || {};
-  config.scopes = ['https://www.googleapis.com/auth/compute'];
-  this._auth = config.authClient || googleAuth(config);
-  this.OS_URLS = GCEImages.OS_URLS;
+export interface GCEImagesConfig extends GoogleAuthOptions {
+  authClient?: GoogleAuth;
 }
 
-GCEImages.OS_URLS = {
+export class GCEImages {
+  private _auth: GoogleAuth;
+  OS_URLS: typeof GCEImages.OS_URLS;
+  constructor(config?: GCEImagesConfig) {
+    config = config || {};
+    config.scopes = ['https://www.googleapis.com/auth/compute'];
+    this._auth = config.authClient || new GoogleAuth(config);
+    this.OS_URLS = GCEImages.OS_URLS;
+  }
+
+private static OS_URLS = {
   centos:
     'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
   'container-vm':
@@ -44,7 +47,7 @@ GCEImages.OS_URLS = {
     'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
 };
 
-GCEImages.OS_TO_URL = {
+private static OS_TO_URL = {
   centos: GCEImages.OS_URLS.centos,
   'centos-cloud': GCEImages.OS_URLS.centos,
 
@@ -85,7 +88,7 @@ GCEImages.OS_TO_URL = {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getAll = function(options, callback) {
+getAll(options, callback?) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
@@ -122,6 +125,7 @@ GCEImages.prototype.getAll = function(options, callback) {
     }
   );
 };
+
 /**
  * Get all available images, but only return the newest one.
  *
@@ -131,7 +135,7 @@ GCEImages.prototype.getAll = function(options, callback) {
  * @param {array} options.osNames [all] - OS names to include in the results.
  * @param {function} callback - Callback function.
  */
-GCEImages.prototype.getLatest = function(options, callback) {
+getLatest(options, callback?) {
   var self = this;
 
   var parsedArguments = this._parseArguments(options, callback);
@@ -156,50 +160,36 @@ GCEImages.prototype.getLatest = function(options, callback) {
   });
 };
 
-GCEImages.prototype._getAllByOS = function(options, callback) {
+_getAllByOS(options, callback) {
   var self = this;
 
   var osParts = this._parseOsInput(options.osNames[0]);
 
-  var reqOpts = {
-    uri: osParts.url,
-    json: true,
-    query: {},
+  var reqOpts: AxiosRequestConfig = {
+    url: osParts.url,
+    params: {}
   };
 
   if (osParts.version.length > 0) {
-    reqOpts.query.filter =
+    reqOpts.params.filter =
       'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
   }
 
-  this._auth.authorizeRequest(reqOpts, function(err, authorizedReqOpts) {
-    if (err) {
-      callback(err);
-      return;
+  this._auth.request(reqOpts).then(resp => {
+    var images = resp.data.items || [];
+    if (!options.deprecated) {
+      images = images.filter(self._filterDeprecated);
     }
+    if (images.length === 0) {
+      callback(new Error('Could not find a suitable image.'));
+    } else {
+      callback(null, images);
+    }
+  }, callback);
 
-    got(reqOpts.uri, authorizedReqOpts, function(err, resp) {
-      if (err) {
-        callback(err);
-        return;
-      }
+  }
 
-      var images = resp.items || [];
-
-      if (!options.deprecated) {
-        images = images.filter(self._filterDeprecated);
-      }
-
-      if (images.length === 0) {
-        callback(new Error('Could not find a suitable image.'));
-      } else {
-        callback(null, images);
-      }
-    });
-  });
-};
-
-GCEImages.prototype._parseArguments = function(options, callback) {
+_parseArguments(options, callback) {
   var defaultOptions = {
     deprecated: false,
     osNames: Object.keys(GCEImages.OS_URLS),
@@ -229,7 +219,7 @@ GCEImages.prototype._parseArguments = function(options, callback) {
   return parsedArguments;
 };
 
-GCEImages.prototype._parseOsInput = function(os) {
+_parseOsInput(os) {
   var osParts = {
     name: '',
     version: '',
@@ -294,16 +284,15 @@ GCEImages.prototype._parseOsInput = function(os) {
   return osParts;
 };
 
-GCEImages.prototype._filterDeprecated = function(image) {
+_filterDeprecated(image) {
   return !image.deprecated;
 };
 
-GCEImages.prototype._sortNewestFirst = function(imageA, imageB) {
+_sortNewestFirst(imageA, imageB) {
   return imageA.creationTimestamp < imageB.creationTimestamp
     ? 1
     : imageA.creationTimestamp > imageB.creationTimestamp
       ? -1
       : 0;
 };
-
-module.exports = GCEImages;
+}
