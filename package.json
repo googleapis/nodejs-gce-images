@@ -68,6 +68,6 @@
   "dependencies": {
     "arrify": "^1.0.0",
     "async": "^2.0.0",
-    "google-auth-library": "^1.6.0"
+    "google-auth-library": "^2.0.0"
   }
 }
