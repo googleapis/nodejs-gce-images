@@ -41,7 +41,7 @@
     "coreos",
     "centos"
   ],
-  "repository": "GoogleCloudPlatform/gce-images",
+  "repository": "googleapis/gce-images",
   "author": "Stephen Sawchuk <sawchuk@gmail.com>",
   "license": "MIT",
   "devDependencies": {
