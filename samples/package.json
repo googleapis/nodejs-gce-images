@@ -5,7 +5,7 @@
   "engines": {
     "node": ">=8"
   },
-  "repository": "GoogleCloudPlatform/gce-images",
+  "repository": "googleapis/gce-images",
   "private": true,
   "scripts": {
     "test": "mocha system-test"
