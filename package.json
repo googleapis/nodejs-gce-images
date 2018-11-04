@@ -10,19 +10,17 @@
   "scripts": {
     "cover": "nyc --reporter=lcov mocha test/*.js && nyc report",
     "docs": "echo no docs 👻",
-    "lint": "eslint samples/",
-    "prettier": "prettier --write samples/*.js",
+    "lint": "gts check && eslint '**/*.js'",
     "test": "mocha build/test",
     "samples-test": "cd samples/ && npm link ../ && npm test && cd ../",
     "system-test": "mocha build/system-test --timeout 600000",
     "presystem-test": "npm run compile",
-    "check": "gts check",
     "clean": "gts clean",
     "compile": "tsc -p .",
-    "fix": "gts fix",
+    "fix": "gts fix && eslint --fix '**/*.js'",
     "prepare": "npm run compile",
     "pretest": "npm run compile",
-    "posttest": "npm run check"
+    "posttest": "npm run lint"
   },
   "keywords": [
     "gce",
@@ -49,6 +47,8 @@
     "@types/async": "^2.0.49",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.5.6",
+    "@types/pify": "^3.0.2",
+    "async": "^2.0.0",
     "codecov": "^3.0.4",
     "eslint": "^5.0.1",
     "eslint-config-prettier": "^3.0.0",
@@ -67,7 +67,7 @@
   },
   "dependencies": {
     "arrify": "^1.0.0",
-    "async": "^2.0.0",
-    "google-auth-library": "^2.0.0"
+    "google-auth-library": "^2.0.0",
+    "pify": "^4.0.1"
   }
 }

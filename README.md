@@ -2,13 +2,13 @@
 > Get a list of globally available Google Compute Engine images
 
 ```sh
-$ npm install --save gce-images
+$ npm install gce-images
 ```
 ```js
-const gceImages = require('gce-images');
+const {GCEImages} = require('gce-images');
 
 // Create a client (see below for more about authorization)
-const images = gceImages();
+const images = new GCEImages();
 
 images.getAll((err, images) => {
 /*
@@ -149,11 +149,11 @@ images.OS_URLS; // also available on require('gce-images').OS_URLS;
 
 #### Authorization
 
-This module uses [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth) to get the required access token. If you don't meet the **[requirements for automatic authentication](https://github.com/stephenplusplus/google-auto-auth#automatic-if)**, you will need to provide the same configuration object detailed in that readme.
+This module uses [google-auth-library](https://github.com/googleapis/google-auth-library-nodejs) to get the required access token. If you don't meet the **[requirements for automatic authentication](https://github.com/stephenplusplus/google-auto-auth#automatic-if)**, you will need to provide the same configuration object detailed in that readme.
 
 ```js
-const gceImages = require('gce-images');
-const images = gceImages({ keyFile: '/Users/stephen/dev/key.json' });
+const {GCEImages} = require('gce-images');
+const images = new GCEImages({ keyFile: '/Users/stephen/dev/key.json' });
 
 images.getAll((err, images) => {});
 images.getLatest('ubuntu', (err, image) => {});
@@ -176,7 +176,7 @@ All accepted names may be suffixed with a version, e.g. `ubuntu-1404`.
 
 ### API
 
-#### gceImages = require('gce-images')
+#### {GCEImages} = require('gce-images')
 
 ##### gceImages.OS_URLS
 
@@ -194,7 +194,7 @@ See the above section on Authorization. This object is only necessary if automat
 
 ###### authConfig.authClient
 
-- Type: [`GoogleAutoAuth`](http://gitnpm.com/google-auto-auth)
+- Type: [`GoogleAuthConfig`](http://gitnpm.com/google-auth-library)
 - *Optional*
 
 If you want to re-use an auth client from [google-auto-auth](http://gitnpm.com/google-auto-auth), pass an instance here.

@@ -5,16 +5,18 @@
  * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
  */
 
-'use strict';
-
 import * as assert from 'assert';
 import * as async from 'async';
-import {GCEImages} from '../src';
+import {GCEImages, Image, ImageMap, ImagesMap} from '../src';
 
 const gceImages = new GCEImages();
 
+interface AllImagesByOSName {
+  [index: string]: {[index: string]: Image[]};
+}
+
 describe('system tests', () => {
-  const allImagesByOsName = {
+  const allImagesByOsName: AllImagesByOSName = {
     deprecated: {},
     stable: {},
   };
@@ -31,8 +33,7 @@ describe('system tests', () => {
                   next(err);
                   return;
                 }
-
-                allImagesByOsName[key] = images;
+                allImagesByOsName[key] = images as ImagesMap;
                 next();
               });
         },
@@ -42,16 +43,14 @@ describe('system tests', () => {
 
   describe('all', () => {
     it('should default to deprecated: false', done => {
-      gceImages.getAll((err, images) => {
+      gceImages.getAll((err, is) => {
+        const images = is as ImagesMap;
         assert.ifError(err);
-
         assert.strictEqual(typeof images, 'object');
-
         Object.keys(images).forEach((osName) => {
           assert.strictEqual(
               images[osName].length, allImagesByOsName.stable[osName].length);
         });
-
         done();
       });
     });
@@ -61,10 +60,9 @@ describe('system tests', () => {
 
       gceImages.getAll(osName, (err, images) => {
         assert.ifError(err);
-
         assert(Array.isArray(images));
         assert.strictEqual(
-            images.length, allImagesByOsName.stable[osName].length);
+            images!.length, allImagesByOsName.stable[osName].length);
 
         done();
       });
@@ -73,11 +71,12 @@ describe('system tests', () => {
 
   describe('latest', () => {
     it('should get only the latest image from every OS', (done) => {
-      gceImages.getLatest((err, images) => {
+      gceImages.getLatest((err, is) => {
+        const images = is as ImageMap;
         assert.ifError(err);
         assert.strictEqual(typeof images, 'object');
         Object.keys(images).forEach((osName) => {
-          assert.strictEqual(images[osName].length, 1);
+          assert.strictEqual(typeof images[osName], 'object');
         });
         done();
       });
@@ -89,14 +88,13 @@ describe('system tests', () => {
       gceImages.getLatest(osName, (err, image) => {
         assert.ifError(err);
         assert.strictEqual(typeof image, 'object');
-        assert(image.selfLink.indexOf(osName) > -1);
+        assert((image as Image).selfLink.indexOf(osName) > -1);
         done();
       });
     });
 
     it('should get the latest image for a specific OS version', (done) => {
       const osName = 'ubuntu-1410';
-
       gceImages.getLatest(
           {
             osNames: [osName],
@@ -105,7 +103,7 @@ describe('system tests', () => {
           (err, image) => {
             assert.ifError(err);
             assert.strictEqual(typeof image, 'object');
-            assert(image.selfLink.indexOf(osName) > -1);
+            assert((image as Image).selfLink.indexOf(osName) > -1);
             done();
           });
     });
