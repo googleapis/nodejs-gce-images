@@ -5,15 +5,57 @@
  * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
  */
 
-'use strict';
-
 import * as arrify from 'arrify';
-import * as async from 'async';
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
-import {AxiosRequestConfig} from '../node_modules/axios';
+import * as pify from 'pify';
 
 export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
+}
+
+export interface GetOptions {
+  deprecated?: boolean;
+  osNames?: string[];
+}
+
+export interface Image {
+  creationTimestamp: string;
+  deprecated: boolean;
+  kind: 'compute#image';
+  selfLink: string;
+  id: string;
+  name: string;
+  description: string;
+  sourceType: string;
+  rawDisk: {source: string, containerType: string};
+  status: string;
+  archiveSizeBytes: number;
+  diskSizeGb: number;
+  licenses: string[];
+}
+
+export interface GetAllCallback {
+  (err: Error|null, images?: Image[]|ImagesMap): void;
+}
+
+export interface GetLatestCallback {
+  (err: Error|null, images?: Image|ImageMap): void;
+}
+
+export interface GetAllByOSCallback {
+  (err: Error|null, images?: Image[]): void;
+}
+
+export type ImagesMap = {
+  [index: string]: Image[]
+};
+export type ImageMap = {
+  [index: string]: Image
+};
+
+interface ParsedArguments<O, C> {
+  options: O;
+  callback: C;
 }
 
 export class GCEImages {
@@ -47,34 +89,26 @@ export class GCEImages {
         'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
   };
 
-  private static OS_TO_URL = {
+  private static OS_TO_URL: {[index: string]: string} = {
     centos: GCEImages.OS_URLS.centos,
     'centos-cloud': GCEImages.OS_URLS.centos,
-
     'container-vm': GCEImages.OS_URLS['container-vm'],
     'google-containers': GCEImages.OS_URLS['container-vm'],
     cos: GCEImages.OS_URLS['container-vm'],
-
     coreos: GCEImages.OS_URLS.coreos,
     'coreos-cloud': GCEImages.OS_URLS.coreos,
-
     debian: GCEImages.OS_URLS.debian,
     'debian-cloud': GCEImages.OS_URLS.debian,
-
     rhel: GCEImages.OS_URLS.redhat,
     'rhel-cloud': GCEImages.OS_URLS.redhat,
     redhat: GCEImages.OS_URLS.redhat,
-
     opensuse: GCEImages.OS_URLS.opensuse,
     'opensuse-cloud': GCEImages.OS_URLS.opensuse,
-
     suse: GCEImages.OS_URLS.suse,
     'suse-cloud': GCEImages.OS_URLS.suse,
-
     ubuntu: GCEImages.OS_URLS.ubuntu,
     'ubuntu-cloud': GCEImages.OS_URLS.ubuntu,
     'ubuntu-os-cloud': GCEImages.OS_URLS.ubuntu,
-
     windows: GCEImages.OS_URLS.windows,
     'windows-cloud': GCEImages.OS_URLS.windows,
   };
@@ -82,46 +116,38 @@ export class GCEImages {
   /**
    * Get all available images.
    *
-   * @param {string=|object=} options - If a string, treat as an OS to fetch
-   *                                    images for.
+   * @param {string=|object=} options - If a string, treat as an OS to fetch images for.
    * @param {boolean} options.deprecated [false] - Include deprecated results.
    * @param {array} options.osNames [all] - OS names to include in the results.
    * @param {function} callback - Callback function.
    */
-  getAll(options, callback?) {
-    const parsedArguments = this._parseArguments(options, callback);
-    options = parsedArguments.options;
-    callback = parsedArguments.callback;
-
-    const osNamesToImages = options.osNames.reduce((acc, osName) => {
-      acc[osName] = [];
-      return acc;
-    }, {});
-
-    async.forEachOf(
-        osNamesToImages,
-
-        (_, osName, next) => {
-          const singleOsOptions =
-              Object.assign({}, options, {osNames: [osName]});
-          this._getAllByOS(singleOsOptions, (err, images) => {
-            osNamesToImages[osName] = images || [];
-            next(err || null);
-          });
-        },
-
-        (err) => {
-          if (err) {
-            callback(err);
-            return;
-          }
-
-          if (options.osNames.length === 1) {
-            callback(null, osNamesToImages[options.osNames[0]]);
-          } else {
-            callback(null, osNamesToImages);
-          }
-        });
+  getAll(cb: GetAllCallback): void;
+  getAll(opts: GetOptions|string, cb: GetAllCallback): void;
+  getAll(opts: GetOptions|string|GetAllCallback, cb?: GetAllCallback): void {
+    const {options, callback} =
+        this._parseArguments<GetOptions, GetAllCallback>(opts, cb);
+    const osNamesToImages = new Map<string, Image[]>();
+    options.osNames!.forEach(name => osNamesToImages.set(name, []));
+    const waits = Array.from(osNamesToImages.keys()).map(name => {
+      const singleOsOptions = Object.assign({}, options, {osNames: [name]});
+      const getAllByOS = pify(this._getAllByOS.bind(this));
+      return getAllByOS(singleOsOptions).then((images: Image[]) => {
+        osNamesToImages.set(name, images || []);
+      });
+    });
+    Promise.all(waits).then(() => {
+      if (options.osNames!.length === 1) {
+        callback(null, osNamesToImages.get(options.osNames![0]));
+      } else {
+        // convert the map into an object
+        const imageMap = Array.from(osNamesToImages)
+                             .reduce((obj: ImagesMap, [key, value]) => {
+                               obj[key] = value;
+                               return obj;
+                             }, {} as ImagesMap);
+        callback(null, imageMap);
+      }
+    });
   }
 
   /**
@@ -133,34 +159,40 @@ export class GCEImages {
    * @param {array} options.osNames [all] - OS names to include in the results.
    * @param {function} callback - Callback function.
    */
-  getLatest(options, callback?) {
-    const parsedArguments = this._parseArguments(options, callback);
-    options = parsedArguments.options;
-    callback = parsedArguments.callback;
-
+  getLatest(cb: GetLatestCallback): void;
+  getLatest(opts: GetOptions|string, cb: GetLatestCallback): void;
+  getLatest(opts: GetOptions|string|GetLatestCallback, cb?: GetLatestCallback):
+      void {
+    const {options, callback} =
+        this._parseArguments<GetOptions, GetLatestCallback>(opts, cb);
     this.getAll(options, (err, images) => {
-      if (err) {
+      if (err || !images) {
         callback(err);
         return;
       }
-
+      let image: Image|ImageMap|undefined;
       if (Array.isArray(images)) {
-        images = images.sort(this._sortNewestFirst).shift();
+        image = images.sort(this._sortNewestFirst).shift();
       } else {
-        for (const image in images) {
-          if (images[image]) {
-            images[image].sort(this._sortNewestFirst).splice(1);
+        image = {} as ImageMap;
+        for (const name in images) {
+          if (images[name]) {
+            image[name] = images[name].sort(this._sortNewestFirst)[0];
           }
         }
       }
-
-      callback(null, images);
+      callback(null, image);
     });
   }
 
-  _getAllByOS(options, callback) {
-    const osParts = this._parseOsInput(options.osNames[0]);
-    const reqOpts: AxiosRequestConfig = {url: osParts.url, params: {}};
+  _getAllByOS(options: GetOptions, callback: GetAllByOSCallback) {
+    const osParts = this._parseOsInput(options.osNames![0]);
+    const reqOpts = {
+      url: osParts.url,
+      params: {} as {
+        [index: string]: string
+      }
+    };
 
     if (osParts.version.length > 0) {
       reqOpts.params.filter =
@@ -180,7 +212,8 @@ export class GCEImages {
     }, callback);
   }
 
-  _parseArguments(options, callback) {
+  // tslint:disable-next-line no-any
+  _parseArguments<O, C>(options: any, callback: any): ParsedArguments<O, C> {
     const defaultOptions = {
       deprecated: false,
       osNames: Object.keys(GCEImages.OS_URLS),
@@ -208,14 +241,14 @@ export class GCEImages {
     return parsedArguments;
   }
 
-  _parseOsInput(os) {
+  _parseOsInput(os: string) {
     const osParts = {
       name: '',
       version: '',
       url: '',
     };
 
-    let project = false;
+    let project: string;
     let hasProject = false;
 
     if (GCEImages.OS_TO_URL[os]) {
@@ -253,8 +286,8 @@ export class GCEImages {
     }
 
     if (hasProject) {
-      osParts.url = 'https://www.googleapis.com/compute/v1/projects/' +
-          project + '/global/images';
+      osParts.url = `https://www.googleapis.com/compute/v1/projects/${
+          project!}/global/images`;
     } else {
       osParts.url = GCEImages.OS_TO_URL[osParts.name];
     }
@@ -269,11 +302,11 @@ export class GCEImages {
     return osParts;
   }
 
-  _filterDeprecated(image) {
+  _filterDeprecated(image: Image) {
     return !image.deprecated;
   }
 
-  _sortNewestFirst(imageA, imageB) {
+  _sortNewestFirst(imageA: Image, imageB: Image) {
     return imageA.creationTimestamp < imageB.creationTimestamp ?
         1 :
         imageA.creationTimestamp > imageB.creationTimestamp ? -1 : 0;
