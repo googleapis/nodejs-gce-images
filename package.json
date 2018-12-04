@@ -10,14 +10,14 @@
   "scripts": {
     "cover": "nyc --reporter=lcov mocha test/*.js && nyc report",
     "docs": "echo no docs 👻",
-    "lint": "gts check && eslint samples/",
+    "lint": "gts check && eslint '**/*.js'",
     "test": "mocha build/test",
     "samples-test": "cd samples/ && npm link ../ && npm test && cd ../",
     "system-test": "mocha build/system-test --timeout 600000",
     "presystem-test": "npm run compile",
     "clean": "gts clean",
     "compile": "tsc -p .",
-    "fix": "gts fix && eslint --fix samples/",
+    "fix": "gts fix && eslint --fix '**/*.js'",
     "prepare": "npm run compile",
     "pretest": "npm run compile"
   },

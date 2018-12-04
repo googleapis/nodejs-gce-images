@@ -5,6 +5,9 @@
   "engines": {
     "node": ">=8"
   },
+  "files": [
+    "*.js"
+  ],
   "repository": "googleapis/gce-images",
   "private": true,
   "scripts": {
@@ -14,6 +17,7 @@
     "gce-images": "^1.0.0"
   },
   "devDependencies": {
+    "execa": "^1.0.0",
     "mocha": "^5.2.0"
   }
 }
