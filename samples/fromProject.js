@@ -17,7 +17,7 @@ if (!projectId) {
 // [START gceimages_latest_os_from_project]
 const {GCEImages} = require('gce-images');
 const gceImages = new GCEImages();
-gceImages.getLatest(`${projectId}/ubuntu`, (err, image) => {
+gceImages.getLatest(`${projectId}/my-ubuntu-image`, (err, image) => {
   if (err) {
     throw err;
   }
