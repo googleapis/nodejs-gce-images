@@ -8,6 +8,7 @@
 import * as arrify from 'arrify';
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
 import * as pify from 'pify';
+const {promisifyAll} = require('@google-cloud/promisify');
 
 export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
@@ -122,8 +123,10 @@ export class GCEImages {
    * @param {function} callback - Callback function.
    */
   getAll(cb: GetAllCallback): void;
+  getAll(opts: GetOptions|string): Promise<Image[][]|ImagesMap[]>;
   getAll(opts: GetOptions|string, cb: GetAllCallback): void;
-  getAll(opts: GetOptions|string|GetAllCallback, cb?: GetAllCallback): void {
+  getAll(opts: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
+      void|Promise<Image[][]|ImagesMap[]> {
     const {options, callback} =
         this._parseArguments<GetOptions, GetAllCallback>(opts, cb);
     const osNamesToImages = new Map<string, Image[]>();
@@ -312,3 +315,5 @@ export class GCEImages {
         imageA.creationTimestamp > imageB.creationTimestamp ? -1 : 0;
   }
 }
+
+promisifyAll(GCEImages);
