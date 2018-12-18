@@ -21,11 +21,11 @@ describe('system tests', () => {
   };
 
   before(async () => {
-    [[allImagesByOsName.deprecated], [allImagesByOsName.stable]] =
+    [allImagesByOsName.deprecated, allImagesByOsName.stable] =
         await Promise.all(
             Object.keys(allImagesByOsName).map(key => gceImages.getAll({
               deprecated: key === 'deprecated'
-            }) as Promise<ImagesMap[]>));
+            }) as Promise<ImagesMap>));
   });
 
   describe('all', () => {

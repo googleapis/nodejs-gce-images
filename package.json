@@ -62,7 +62,6 @@
     "typescript": "~3.2.0"
   },
   "dependencies": {
-    "@google-cloud/promisify": "^0.3.0",
     "arrify": "^1.0.0",
     "google-auth-library": "^2.0.0",
     "pify": "^4.0.1"

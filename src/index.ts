@@ -8,7 +8,6 @@
 import * as arrify from 'arrify';
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
 import * as pify from 'pify';
-const {promisifyAll} = require('@google-cloud/promisify');
 
 export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
@@ -123,12 +122,12 @@ export class GCEImages {
    * @param {function} callback - Callback function.
    */
   getAll(cb: GetAllCallback): void;
-  getAll(opts: GetOptions|string): Promise<Image[][]|ImagesMap[]>;
+  getAll(opts: GetOptions|string): Promise<Image[]|ImagesMap>;
   getAll(opts: GetOptions|string, cb: GetAllCallback): void;
-  getAll(opts: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
-      void|Promise<Image[][]|ImagesMap[]> {
+  getAll(optsOrCb: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
+      void|Promise<Image[]|ImagesMap> {
     const {options, callback} =
-        this._parseArguments<GetOptions, GetAllCallback>(opts, cb);
+        this._parseArguments<GetOptions, GetAllCallback>(optsOrCb, cb);
     const osNamesToImages = new Map<string, Image[]>();
     options.osNames!.forEach(name => osNamesToImages.set(name, []));
     const waits = Array.from(osNamesToImages.keys()).map(name => {
@@ -138,9 +137,9 @@ export class GCEImages {
         osNamesToImages.set(name, images || []);
       });
     });
-    Promise.all(waits).then(() => {
+    const promise = Promise.all(waits).then(() => {
       if (options.osNames!.length === 1) {
-        callback(null, osNamesToImages.get(options.osNames![0]));
+        return osNamesToImages.get(options.osNames![0]) as Image[];
       } else {
         // convert the map into an object
         const imageMap = Array.from(osNamesToImages)
@@ -148,9 +147,14 @@ export class GCEImages {
                                obj[key] = value;
                                return obj;
                              }, {} as ImagesMap);
-        callback(null, imageMap);
+        return imageMap;
       }
     });
+    if (callback) {
+      promise.then((res) => callback(null, res));
+    } else {
+      return promise;
+    }
   }
 
   /**
@@ -315,5 +319,3 @@ export class GCEImages {
         imageA.creationTimestamp > imageB.creationTimestamp ? -1 : 0;
   }
 }
-
-promisifyAll(GCEImages);
