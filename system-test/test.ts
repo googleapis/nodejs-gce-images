@@ -5,7 +5,7 @@
  * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
  */
 
-import * as assert from 'assert';
+const {assert} = require('chai');
 import {GCEImages, Image, ImageMap, ImagesMap} from '../src';
 
 const gceImages = new GCEImages();
@@ -29,17 +29,17 @@ describe('system tests', () => {
   });
 
   describe('all', () => {
-    it('should default to deprecated: false', done => {
-      gceImages.getAll((err, is) => {
-        const images = is as ImagesMap;
-        assert.ifError(err);
+    it('should default to deprecated: false', async () => {
+      try {
+        const images = await gceImages.getAll() as ImagesMap;
         assert.strictEqual(typeof images, 'object');
         Object.keys(images).forEach((osName) => {
           assert.strictEqual(
               images[osName].length, allImagesByOsName.stable[osName].length);
         });
-        done();
-      });
+      } catch (err) {
+        assert.ifError(err);
+      }
     });
 
     it('should get all of the images available for a specific OS', (done) => {
@@ -50,34 +50,33 @@ describe('system tests', () => {
         assert(Array.isArray(images));
         assert.strictEqual(
             images!.length, allImagesByOsName.stable[osName].length);
-
         done();
       });
     });
   });
 
   describe('latest', () => {
-    it('should get only the latest image from every OS', (done) => {
-      gceImages.getLatest((err, is) => {
-        const images = is as ImageMap;
-        assert.ifError(err);
+    it('should get only the latest image from every OS', async () => {
+      try {
+        const images = await gceImages.getLatest() as ImageMap;
         assert.strictEqual(typeof images, 'object');
         Object.keys(images).forEach((osName) => {
           assert.strictEqual(typeof images[osName], 'object');
         });
-        done();
-      });
+      } catch (err) {
+        assert.ifError(err);
+      }
     });
 
-    it('should get the latest image for a specific OS', (done) => {
+    it('should get the latest image for a specific OS', async () => {
       const osName = 'ubuntu';
-
-      gceImages.getLatest(osName, (err, image) => {
-        assert.ifError(err);
+      try {
+        const image = await gceImages.getLatest(osName) as Image;
         assert.strictEqual(typeof image, 'object');
-        assert((image as Image).selfLink.indexOf(osName) > -1);
-        done();
-      });
+        assert(image.selfLink.indexOf(osName) > -1);
+      } catch (err) {
+        assert.ifError(err);
+      }
     });
 
     it('should get the latest image for a specific OS version', (done) => {

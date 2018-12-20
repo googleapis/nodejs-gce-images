@@ -9,11 +9,9 @@
 
 // [START gceimages_latest_os_specific_version]
 const {GCEImages} = require('gce-images');
-const gceImages = new GCEImages();
-gceImages.getLatest('ubuntu-1404', (err, image) => {
-  if (err) {
-    throw err;
-  }
-  console.log(image);
-});
+async function main() {
+  const gceImages = new GCEImages();
+  console.log(await gceImages.getLatest('ubuntu-1404'));
+}
+main().catch(console.error);
 // [START gceimages_latest_os_specific_version]

@@ -9,11 +9,9 @@
 
 // [START gceimages_quickstart]
 const {GCEImages} = require('gce-images');
-const gceImages = new GCEImages();
-gceImages.getAll((err, images) => {
-  if (err) {
-    throw err;
-  }
-  console.log(images);
-});
+async function main() {
+  const gceImages = new GCEImages();
+  console.log(await gceImages.getAll());
+}
+main().catch(console.error);
 // [END gceimages_quickstart]

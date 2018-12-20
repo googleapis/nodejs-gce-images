@@ -27,7 +27,7 @@ describe('quickstart', () => {
 });
 
 describe('from project', () => {
-  it('should return a an image', async () => {
+  it('should return an image', async () => {
     const {stdout} = await execa('node', ['fromProject.js']);
     assert.match(stdout, /^{/);
   });
