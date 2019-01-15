@@ -117,31 +117,34 @@ export class GCEImages {
    * @param {function} callback - Callback function.
    * @returns {Promise} if callback is omitted.
    */
-  async getAll(cb: GetAllCallback): Promise<void>;
-  async getAll(opts?: GetOptions|string): Promise<Image[]|ImagesMap>;
-  async getAll(opts: GetOptions|string, cb: GetAllCallback): Promise<void>;
-  async getAll(
-      optsOrCb?: GetOptions|string|GetAllCallback,
-      cb?: GetAllCallback): Promise<Image[]|ImagesMap|void> {
+  getAll(cb: GetAllCallback): void;
+  getAll(opts?: GetOptions|string): Promise<Image[]|ImagesMap>;
+  getAll(opts: GetOptions|string, cb: GetAllCallback): void;
+  getAll(optsOrCb?: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
+      Promise<Image[]|ImagesMap>|void {
     const {options, callback} =
         this._parseArguments<GetOptions, GetAllCallback>(optsOrCb, cb);
+    if (callback) {
+      this.getAllAsync(options).then(
+          r => callback(null, r as Image[]), callback);
+    } else {
+      return this.getAllAsync(options);
+    }
+  }
+
+  private async getAllAsync(opts: GetOptions): Promise<Image[]|ImagesMap> {
     const osNamesToImages = new Map<string, Image[]>();
-    await Promise.all(options.osNames!.map(async name => {
-      const singleOsOptions = Object.assign({}, options, {osNames: [name]});
+    await Promise.all(opts.osNames!.map(async name => {
+      const singleOsOptions = Object.assign({}, opts, {osNames: [name]});
       osNamesToImages.set(name, await this._getAllByOS(singleOsOptions) || []);
     }));
-    const result = options.osNames!.length === 1 ?
-        osNamesToImages.get(options.osNames![0]) as Image[] :
+    const result = opts.osNames!.length === 1 ?
+        osNamesToImages.get(opts.osNames![0]) as Image[] :
         Array.from(osNamesToImages).reduce((obj: ImagesMap, [key, value]) => {
           obj[key] = value;
           return obj;
         }, {} as ImagesMap);
-
-    if (callback) {
-      return callback(null, result as Image[]);
-    } else {
-      return result;
-    }
+    return result as Image[];
   }
 
   /**
@@ -154,32 +157,35 @@ export class GCEImages {
    * @param {function} callback - Callback function.
    * @returns {Promise} if callback is omitted.
    */
-  async getLatest(cb: GetLatestCallback): Promise<void>;
-  async getLatest(opts?: GetOptions|string): Promise<Image|ImageMap>;
-  async getLatest(opts: GetOptions|string, cb: GetLatestCallback):
-      Promise<void>;
-  async getLatest(
+  getLatest(cb: GetLatestCallback): void;
+  getLatest(opts?: GetOptions|string): Promise<Image|ImageMap>;
+  getLatest(opts: GetOptions|string, cb: GetLatestCallback): void;
+  getLatest(
       optsOrCb?: GetOptions|string|GetLatestCallback,
-      cb?: GetLatestCallback): Promise<void|Image|ImageMap> {
+      cb?: GetLatestCallback): Promise<Image|ImageMap>|void {
     const {options, callback} =
         this._parseArguments<GetOptions, GetLatestCallback>(optsOrCb, cb);
-    const newImages = await this.getAll(options);
+    if (callback) {
+      this.getLatestAsync(options).then(r => callback(null, r), callback);
+    } else {
+      return this.getLatestAsync(options);
+    }
+  }
+
+  private async getLatestAsync(opts: GetOptions): Promise<Image|ImageMap> {
+    const images = await this.getAllAsync(opts);
     let image: Image|ImageMap|undefined;
-    if (Array.isArray(newImages)) {
-      [image] = newImages.sort(this._sortNewestFirst);
+    if (Array.isArray(images)) {
+      [image] = images.sort(this._sortNewestFirst);
     } else {
       image = {} as ImageMap;
-      for (const name in newImages) {
-        if (newImages[name]) {
-          image[name] = newImages[name].sort(this._sortNewestFirst)[0];
+      for (const name in images) {
+        if (images[name]) {
+          image[name] = images[name].sort(this._sortNewestFirst)[0];
         }
       }
     }
-    if (callback) {
-      return callback(null, image);
-    } else {
-      return image;
-    }
+    return image;
   }
 
   async _getAllByOS(options: GetOptions&{osNames: string[]}): Promise<Image[]> {

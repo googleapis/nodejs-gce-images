@@ -18,7 +18,8 @@ if (!projectId) {
 const {GCEImages} = require('gce-images');
 async function main() {
   const gceImages = new GCEImages();
-  console.log(await gceImages.getLatest(`${projectId}/my-ubuntu-image`));
+  const result = await gceImages.getLatest(`${projectId}/my-ubuntu-image`);
+  console.log(result);
 }
 main().catch(console.error);
 // [END gceimages_latest_os_from_project]

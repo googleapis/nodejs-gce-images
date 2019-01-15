@@ -11,7 +11,8 @@
 const {GCEImages} = require('gce-images');
 async function main() {
   const gceImages = new GCEImages();
-  console.log(await gceImages.getAll());
+  const result = await gceImages.getLatest('ubuntu-1404');
+  console.log(result);
 }
 main().catch(console.error);
 // [END gceimages_quickstart]
