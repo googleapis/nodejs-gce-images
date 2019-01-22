@@ -5,8 +5,7 @@
  * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
  */
 
-import * as assert from 'assert';
-import * as async from 'async';
+const {assert} = require('chai');
 import {GCEImages, Image, ImageMap, ImagesMap} from '../src';
 
 const gceImages = new GCEImages();
@@ -21,37 +20,21 @@ describe('system tests', () => {
     stable: {},
   };
 
-  before(done => {
-    // Get counts.
-    async.forEachOf(
-        allImagesByOsName,
-
-        (_, key, next) => {
-          gceImages.getAll(
-              {deprecated: key === 'deprecated'}, (err, images) => {
-                if (err) {
-                  next(err);
-                  return;
-                }
-                allImagesByOsName[key] = images as ImagesMap;
-                next();
-              });
-        },
-
-        done);
+  before(async () => {
+    [allImagesByOsName.deprecated, allImagesByOsName.stable] =
+        await Promise.all(
+            Object.keys(allImagesByOsName).map(key => gceImages.getAll({
+              deprecated: key === 'deprecated'
+            }) as Promise<ImagesMap>));
   });
 
   describe('all', () => {
-    it('should default to deprecated: false', done => {
-      gceImages.getAll((err, is) => {
-        const images = is as ImagesMap;
-        assert.ifError(err);
-        assert.strictEqual(typeof images, 'object');
-        Object.keys(images).forEach((osName) => {
-          assert.strictEqual(
-              images[osName].length, allImagesByOsName.stable[osName].length);
-        });
-        done();
+    it('should default to deprecated: false', async () => {
+      const images = await gceImages.getAll() as ImagesMap;
+      assert.strictEqual(typeof images, 'object');
+      Object.keys(images).forEach((osName) => {
+        assert.strictEqual(
+            images[osName].length, allImagesByOsName.stable[osName].length);
       });
     });
 
@@ -63,34 +46,25 @@ describe('system tests', () => {
         assert(Array.isArray(images));
         assert.strictEqual(
             images!.length, allImagesByOsName.stable[osName].length);
-
         done();
       });
     });
   });
 
   describe('latest', () => {
-    it('should get only the latest image from every OS', (done) => {
-      gceImages.getLatest((err, is) => {
-        const images = is as ImageMap;
-        assert.ifError(err);
-        assert.strictEqual(typeof images, 'object');
-        Object.keys(images).forEach((osName) => {
-          assert.strictEqual(typeof images[osName], 'object');
-        });
-        done();
+    it('should get only the latest image from every OS', async () => {
+      const images = await gceImages.getLatest() as ImageMap;
+      assert.strictEqual(typeof images, 'object');
+      Object.keys(images).forEach((osName) => {
+        assert.strictEqual(typeof images[osName], 'object');
       });
     });
 
-    it('should get the latest image for a specific OS', (done) => {
+    it('should get the latest image for a specific OS', async () => {
       const osName = 'ubuntu';
-
-      gceImages.getLatest(osName, (err, image) => {
-        assert.ifError(err);
-        assert.strictEqual(typeof image, 'object');
-        assert((image as Image).selfLink.indexOf(osName) > -1);
-        done();
-      });
+      const image = await gceImages.getLatest(osName) as Image;
+      assert.strictEqual(typeof image, 'object');
+      assert(image.selfLink.indexOf(osName) > -1);
     });
 
     it('should get the latest image for a specific OS version', (done) => {

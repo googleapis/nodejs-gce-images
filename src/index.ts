@@ -7,7 +7,6 @@
 
 import * as arrify from 'arrify';
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
-import * as pify from 'pify';
 
 export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
@@ -40,10 +39,6 @@ export interface GetAllCallback {
 
 export interface GetLatestCallback {
   (err: Error|null, images?: Image|ImageMap): void;
-}
-
-export interface GetAllByOSCallback {
-  (err: Error|null, images?: Image[]): void;
 }
 
 export type ImagesMap = {
@@ -120,34 +115,36 @@ export class GCEImages {
    * @param {boolean} options.deprecated [false] - Include deprecated results.
    * @param {array} options.osNames [all] - OS names to include in the results.
    * @param {function} callback - Callback function.
+   * @returns {Promise} if callback is omitted.
    */
   getAll(cb: GetAllCallback): void;
+  getAll(opts?: GetOptions|string): Promise<Image[]|ImagesMap>;
   getAll(opts: GetOptions|string, cb: GetAllCallback): void;
-  getAll(opts: GetOptions|string|GetAllCallback, cb?: GetAllCallback): void {
+  getAll(optsOrCb?: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
+      Promise<Image[]|ImagesMap>|void {
     const {options, callback} =
-        this._parseArguments<GetOptions, GetAllCallback>(opts, cb);
+        this._parseArguments<GetOptions, GetAllCallback>(optsOrCb, cb);
+    if (callback) {
+      this.getAllAsync(options).then(
+          r => callback(null, r as Image[]), callback);
+    } else {
+      return this.getAllAsync(options);
+    }
+  }
+
+  private async getAllAsync(opts: GetOptions): Promise<Image[]|ImagesMap> {
     const osNamesToImages = new Map<string, Image[]>();
-    options.osNames!.forEach(name => osNamesToImages.set(name, []));
-    const waits = Array.from(osNamesToImages.keys()).map(name => {
-      const singleOsOptions = Object.assign({}, options, {osNames: [name]});
-      const getAllByOS = pify(this._getAllByOS.bind(this));
-      return getAllByOS(singleOsOptions).then((images: Image[]) => {
-        osNamesToImages.set(name, images || []);
-      });
-    });
-    Promise.all(waits).then(() => {
-      if (options.osNames!.length === 1) {
-        callback(null, osNamesToImages.get(options.osNames![0]));
-      } else {
-        // convert the map into an object
-        const imageMap = Array.from(osNamesToImages)
-                             .reduce((obj: ImagesMap, [key, value]) => {
-                               obj[key] = value;
-                               return obj;
-                             }, {} as ImagesMap);
-        callback(null, imageMap);
-      }
-    });
+    await Promise.all(opts.osNames!.map(async name => {
+      const singleOsOptions = Object.assign({}, opts, {osNames: [name]});
+      osNamesToImages.set(name, await this._getAllByOS(singleOsOptions) || []);
+    }));
+    const result = opts.osNames!.length === 1 ?
+        osNamesToImages.get(opts.osNames![0]) as Image[] :
+        Array.from(osNamesToImages).reduce((obj: ImagesMap, [key, value]) => {
+          obj[key] = value;
+          return obj;
+        }, {} as ImagesMap);
+    return result as Image[];
   }
 
   /**
@@ -158,34 +155,40 @@ export class GCEImages {
    * @param {boolean} options.deprecated [false] - Include deprecated results.
    * @param {array} options.osNames [all] - OS names to include in the results.
    * @param {function} callback - Callback function.
+   * @returns {Promise} if callback is omitted.
    */
   getLatest(cb: GetLatestCallback): void;
+  getLatest(opts?: GetOptions|string): Promise<Image|ImageMap>;
   getLatest(opts: GetOptions|string, cb: GetLatestCallback): void;
-  getLatest(opts: GetOptions|string|GetLatestCallback, cb?: GetLatestCallback):
-      void {
+  getLatest(
+      optsOrCb?: GetOptions|string|GetLatestCallback,
+      cb?: GetLatestCallback): Promise<Image|ImageMap>|void {
     const {options, callback} =
-        this._parseArguments<GetOptions, GetLatestCallback>(opts, cb);
-    this.getAll(options, (err, images) => {
-      if (err || !images) {
-        callback(err);
-        return;
-      }
-      let image: Image|ImageMap|undefined;
-      if (Array.isArray(images)) {
-        image = images.sort(this._sortNewestFirst).shift();
-      } else {
-        image = {} as ImageMap;
-        for (const name in images) {
-          if (images[name]) {
-            image[name] = images[name].sort(this._sortNewestFirst)[0];
-          }
-        }
-      }
-      callback(null, image);
-    });
+        this._parseArguments<GetOptions, GetLatestCallback>(optsOrCb, cb);
+    if (callback) {
+      this.getLatestAsync(options).then(r => callback(null, r), callback);
+    } else {
+      return this.getLatestAsync(options);
+    }
   }
 
-  _getAllByOS(options: GetOptions, callback: GetAllByOSCallback) {
+  private async getLatestAsync(opts: GetOptions): Promise<Image|ImageMap> {
+    const images = await this.getAllAsync(opts);
+    let image: Image|ImageMap|undefined;
+    if (Array.isArray(images)) {
+      [image] = images.sort(this._sortNewestFirst);
+    } else {
+      image = {} as ImageMap;
+      for (const name in images) {
+        if (images[name]) {
+          image[name] = images[name].sort(this._sortNewestFirst)[0];
+        }
+      }
+    }
+    return image;
+  }
+
+  async _getAllByOS(options: GetOptions&{osNames: string[]}): Promise<Image[]> {
     const osParts = this._parseOsInput(options.osNames![0]);
     const reqOpts = {
       url: osParts.url,
@@ -193,23 +196,20 @@ export class GCEImages {
         [index: string]: string
       }
     };
-
     if (osParts.version.length > 0) {
       reqOpts.params.filter =
           'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
     }
+    const resp = await this._auth.request(reqOpts);
+    let images = resp.data.items || [];
+    if (!options.deprecated) {
+      images = images.filter(this._filterDeprecated);
+    }
 
-    this._auth.request(reqOpts).then(resp => {
-      let images = resp.data.items || [];
-      if (!options.deprecated) {
-        images = images.filter(this._filterDeprecated);
-      }
-      if (images.length === 0) {
-        callback(new Error('Could not find a suitable image.'));
-      } else {
-        callback(null, images);
-      }
-    }, callback);
+    if (images.length === 0) {
+      throw new Error('Could not find a suitable image.');
+    }
+    return images;
   }
 
   // tslint:disable-next-line no-any
