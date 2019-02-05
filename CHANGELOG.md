@@ -4,6 +4,20 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## v1.1.0
+
+02-05-2019 15:28 PST
+
+### New Features
+- feat: introduce async methods ([#100](https://github.com/googleapis/gce-images/pull/100))
+
+### Dependencies
+- fix(deps): update dependency google-auth-library to v3 ([#103](https://github.com/googleapis/gce-images/pull/103))
+
+### Documentation
+- docs: add lint/fix example to contributing guide ([#107](https://github.com/googleapis/gce-images/pull/107))
+- docs: add samples and sample tests ([#88](https://github.com/googleapis/gce-images/pull/88))
+
 ## v1.0.0
 
 Welcome to 1.0! The big feature in this release is the availability of TypeScript types out of the box.  To that end, there is a breaking change:
