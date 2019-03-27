@@ -1,250 +1,104 @@
-# gce-images
-> Get a list of globally available Google Compute Engine images
+[//]: # "This README.md file is auto-generated, all changes to this file will be lost."
+[//]: # "To regenerate it, use `python -m synthtool`."
+<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
 
-```sh
-$ npm install gce-images
+# [:  Client](https://github.com/)
+
+None
+[![npm version](https://img.shields.io/npm/v/gce-images.svg)](https://www.npmjs.org/package/gce-images)
+[![codecov](https://img.shields.io/codecov/c/github//master.svg?style=flat)](https://codecov.io/gh/)
+
+
+Get a list of globally available Google Compute Engine images
+
+
+* [Using the client library](#using-the-client-library)
+* [Samples](#samples)
+* [Versioning](#versioning)
+* [Contributing](#contributing)
+* [License](#license)
+
+## Using the client library
+
+1.  [Select or create a Cloud Platform project][projects].
+1.  [Enable the  API][enable_api].
+1.  [Set up authentication with a service account][auth] so you can access the
+    API from your local workstation.
+
+1. Install the client library:
+
+        npm install gce-images
+
+
+1. Try an example:
+
 ```
-```js
 const {GCEImages} = require('gce-images');
+async function main() {
+  const gceImages = new GCEImages();
+  const result = await gceImages.getLatest('ubuntu-1404');
+  console.log(result);
+}
+main().catch(console.error);
 
-// Create a client (see below for more about authorization)
-const images = new GCEImages();
-
-images.getAll((err, images) => {
-/*
-  images = {
-    centos: {
-      [
-        {
-          kind: 'compute#image',
-          selfLink: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-6-v20150710',
-          id: '2223645373384728207',
-          creationTimestamp: '2015-07-13T13:32:32.483-07:00',
-          name: 'centos-6-v20150710',
-          description: 'CentOS, CentOS, 6.6, x86_64 built on 2015-07-10',
-          sourceType: 'RAW',
-          rawDisk: [Object],
-          status: 'READY',
-          archiveSizeBytes: '1133229966',
-          diskSizeGb: '10'
-        },
-        // ...
-    },
-    coreos: {
-      // ...
-    },
-    debian: {
-      // ...
-    },
-    redhat: {
-      // ...
-    },
-    opensuse: {
-      // ...
-    },
-    suse: {
-      // ...
-    },
-    ubuntu: {
-      // ...
-    }
-  };
-*/
-});
 ```
 
-#### Get the latest image for a specific OS
 
-```js
-images.getLatest('ubuntu', (err, image) => {
-/*
-  image = {
-    kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1504-vivid-v20150616a',
-    id: '6610082300127119636',
-    creationTimestamp: '2015-06-17T02:03:55.825-07:00',
-    name: 'ubuntu-1504-vivid-v20150616a',
-    description: 'Canonical, Ubuntu, 15.04, amd64 vivid image built on 2015-06-16',
-    sourceType: 'RAW',
-    rawDisk: { source: '', containerType: 'TAR' },
-    status: 'READY',
-    archiveSizeBytes: '806558757',
-    diskSizeGb: '10',
-    licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
-    ]
-  }
-*/
-});
-```
 
-#### Get the latest image for a specific OS from your project
+## Samples
 
-```js
-images.getLatest('your-project-id-or-name/ubuntu', (err, image) => {
-/*
-  image = {
-    kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/your-project-id-or-name/global/images/ubuntu-1504-vivid-v20150616a',
-    id: '6610082300127119636',
-    creationTimestamp: '2015-06-17T02:03:55.825-07:00',
-    name: 'ubuntu-1504-vivid-v20150616a',
-    description: 'Canonical, Ubuntu, 15.04, amd64 vivid image built on 2015-06-16',
-    sourceType: 'RAW',
-    rawDisk: { source: '', containerType: 'TAR' },
-    status: 'READY',
-    archiveSizeBytes: '806558757',
-    diskSizeGb: '10',
-    licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
-    ]
-  }
-*/
-});
-```
+Samples are in the [`samples/`](https://github.com//tree/master/samples) directory. The samples' `README.md`
+has instructions for running the samples.
 
-#### Get the latest image for a specific version of an OS
+| Sample                      | Source Code                       | Try it |
+| --------------------------- | --------------------------------- | ------ |
+| From Project | [source code](https://github.com//blob/master/samples/fromProject.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/&page=editor&open_in_editor=samples/fromProject.js,samples/README.md) |
+| Latest Specific O S | [source code](https://github.com//blob/master/samples/latestSpecificOS.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/&page=editor&open_in_editor=samples/latestSpecificOS.js,samples/README.md) |
+| Specific O S | [source code](https://github.com//blob/master/samples/specificOS.js) | [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/&page=editor&open_in_editor=samples/specificOS.js,samples/README.md) |
 
-```js
-images.getLatest('ubuntu-1404', (err, image) => {
-/*
-  image = {
-    kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1410-utopic-v20150625',
-    id: '7075003915689987469',
-    creationTimestamp: '2015-07-09T10:46:10.424-07:00',
-    name: 'ubuntu-1410-utopic-v20150625',
-    description: 'Canonical, Ubuntu, 14.10, amd64 utopic image built on 2015-06-25',
-    sourceType: 'RAW',
-    rawDisk: { source: '', containerType: 'TAR' },
-    status: 'READY',
-    archiveSizeBytes: '752874399',
-    diskSizeGb: '10',
-    licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1410-utopic'
-    ]
-  }
-*/
-});
-```
 
-#### Get a map of OS names to their project's api URL
 
-```js
-images.OS_URLS; // also available on require('gce-images').OS_URLS;
-/*
-  {
-    centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
-    'container-vm': 'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
-    coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
-    debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
-    redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
-    opensuse: 'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
-    suse: 'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
-    ubuntu: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
-    windows: 'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images'
-  }
-*/
-```
+The [  Client API Reference][client-docs] documentation
+also contains samples.
 
-#### Authorization
+## Versioning
 
-This module uses [google-auth-library](https://github.com/googleapis/google-auth-library-nodejs) to get the required access token. If you don't meet the **[requirements for automatic authentication](https://github.com/stephenplusplus/google-auto-auth#automatic-if)**, you will need to provide the same configuration object detailed in that readme.
+This library follows [Semantic Versioning](http://semver.org/).
 
-```js
-const {GCEImages} = require('gce-images');
-const images = new GCEImages({ keyFile: '/Users/stephen/dev/key.json' });
 
-images.getAll((err, images) => {});
-images.getLatest('ubuntu', (err, image) => {});
-```
 
-<a name="os-names"></a>
-#### Accepted OS names
 
-- `centos` (also `centos-cloud`)
-- `container-vm` (also `google-containers`)
-- `coreos` (also `coreos-cloud`)
-- `debian` (also `debian-cloud`)
-- `redhat` (also `rhel`, `rhel-cloud`)
-- `opensuse` (also `opensuse-cloud`)
-- `suse` (also `suse-cloud`)
-- `ubuntu` (also `ubuntu-cloud`, `ubuntu-os-cloud`)
-- `windows` (also `windows-cloud`)
 
-All accepted names may be suffixed with a version, e.g. `ubuntu-1404`.
 
-### API
+More Information: [Google Cloud Platform Launch Stages][launch_stages]
 
-#### {GCEImages} = require('gce-images')
+[launch_stages]: https://cloud.google.com/terms/launch-stages
 
-##### gceImages.OS_URLS
+## Contributing
 
-- Type: `Object`
+Contributions welcome! See the [Contributing Guide](https://github.com//blob/master/CONTRIBUTING.md).
 
-A map of OS names to their Google APIs public image URL.
+## License
 
-#### images = gceImages([authConfig])
+Apache Version 2.0
 
-##### authConfig
+See [LICENSE](https://github.com//blob/master/LICENSE)
 
-- Type: `Object`
+## What's Next
 
-See the above section on Authorization. This object is only necessary if automatic authentication is not available in your environment. See the [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth#authconfig) documentation for the accepted properties.
+* [ Documentation][product-docs]
+* [  Client API Reference][client-docs]
+* [github.com/](https://github.com/)
 
-###### authConfig.authClient
+Read more about the client libraries for Cloud APIs, including the older
+Google APIs Client Libraries, in [Client Libraries Explained][explained].
 
-- Type: [`GoogleAuthConfig`](http://gitnpm.com/google-auth-library)
-- *Optional*
+[explained]: https://cloud.google.com/apis/docs/client-libraries-explained
 
-If you want to re-use an auth client from [google-auto-auth](http://gitnpm.com/google-auto-auth), pass an instance here.
-
-#### images.getAll([options], callback)
-#### images.getLatest([options], callback)
-
-##### options
-
-- Optional
-- Type: `String` or `Object`
-
-If a string, it is expanded to: `options = { osNames: [**string input**] }`.
-
-If not provided, the default `options` detailed below are used.
-
-###### options.osNames
-
-- Type: `String[]`
-- Default: [All](#os-names)
-
-All operating systems you wish to receive image metadata for. See [Accepted OS names](#os-names).
-
-###### options.deprecated
-
-- Type: `Boolean`
-- Default: `false`
-
-Include deprecated image metadata in results.
-
-##### callback(err, images)
-
-###### callback.err
-
-- Type: `Error`
-
-An error that occurred during an API request or if no results match the provided OS name or version.
-
-###### callback.images
-
-- Type: `Object` or `Array`
-
-With `getAll`:
-
-If only a single OS is being looked up, you will receive an array of all image metadata objects for that OS.
-
-If multiple OS names were given, you will receive an object keyed by the [OS name](#os-names). Each key will reference an array of metadata objects for that OS.
-
-With `getLatest`:
-
-If only a single OS is being looked up, you will receive its metadata object back.
-
-If multiple OS names were given, you will receive an object keyed by the [OS name](#os-names). Each key will reference a metadata object.
+[client-docs]: 
+[product-docs]: 
+[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
+[projects]: https://console.cloud.google.com/project
+[billing]: https://support.google.com/cloud/answer/6293499#enable-billing
+[enable_api]: https://console.cloud.google.com/flows/enableapi?apiid=
+[auth]: https://cloud.google.com/docs/authentication/getting-started
