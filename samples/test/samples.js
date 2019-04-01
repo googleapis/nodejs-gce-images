@@ -10,15 +10,6 @@
 const {assert} = require('chai');
 const execa = require('execa');
 
-if (
-  !process.env.GCLOUD_PROJECT ||
-  !process.env.GOOGLE_APPLICATION_CREDENTIALS
-) {
-  throw new Error(
-    'Please set the `GCLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` environment variables to run the tests.'
-  );
-}
-
 describe('quickstart', () => {
   it('should return a list of images', async () => {
     const {stdout} = await execa('node', ['quickstart.js']);
