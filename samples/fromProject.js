@@ -7,19 +7,15 @@
 
 'use strict';
 
-const projectId = process.env.GCLOUD_PROJECT;
-if (!projectId) {
-  throw new Error(
-    'Please set the `GCLOUD_PROJECT` environment variable to run this sample.'
-  );
-}
-
 // [START gceimages_latest_os_from_project]
 const {GCEImages} = require('gce-images');
-async function main() {
+
+async function getLatest() {
   const gceImages = new GCEImages();
+  const projectId = await gceImages.getProjectId();
   const result = await gceImages.getLatest(`${projectId}/my-ubuntu-image`);
   console.log(result);
 }
-main().catch(console.error);
+
+getLatest();
 // [END gceimages_latest_os_from_project]

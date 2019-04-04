@@ -63,6 +63,10 @@ export class GCEImages {
     this.OS_URLS = GCEImages.OS_URLS;
   }
 
+  async getProjectId() {
+    return this._auth.getProjectId();
+  }
+
   private static OS_URLS = {
     centos:
         'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
