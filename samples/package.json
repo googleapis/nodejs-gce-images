@@ -11,7 +11,7 @@
   "repository": "googleapis/gce-images",
   "private": true,
   "scripts": {
-    "test": "mocha system-test"
+    "test": "mocha"
   },
   "dependencies": {
     "gce-images": "^1.1.0"

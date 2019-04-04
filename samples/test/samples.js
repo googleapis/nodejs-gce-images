@@ -12,15 +12,6 @@ const cp = require('child_process');
 
 const execSync = (cmd) => cp.execSync(cmd, {encoding: 'utf-8'});
 
-if (
-  !process.env.GCLOUD_PROJECT ||
-  !process.env.GOOGLE_APPLICATION_CREDENTIALS
-) {
-  throw new Error(
-    'Please set the `GCLOUD_PROJECT` and `GOOGLE_APPLICATION_CREDENTIALS` environment variables to run the tests.'
-  );
-}
-
 describe('quickstart', () => {
   it('should return a list of images', async () => {
     const {stdout} = await execa('node', ['quickstart.js']);

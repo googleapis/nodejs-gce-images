@@ -9,10 +9,12 @@
 
 // [START gceimages_latest_os]
 const {GCEImages} = require('gce-images');
-async function main() {
+
+async function getLatest() {
   const gceImages = new GCEImages();
   const result = await gceImages.getLatest('ubuntu');
   console.log(result);
 }
-main().catch(console.error);
+
+getLatest();
 // [END gceimages_latest_os]
