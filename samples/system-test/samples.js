@@ -8,7 +8,7 @@
 'use strict';
 
 const {assert} = require('chai');
-const execa = require('execa');
+const {execSync} = require('child_process');
 
 if (
   !process.env.GCLOUD_PROJECT ||
