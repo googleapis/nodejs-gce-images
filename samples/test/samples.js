@@ -13,29 +13,29 @@ const cp = require('child_process');
 const execSync = cmd => cp.execSync(cmd, {encoding: 'utf-8'});
 
 describe('quickstart', () => {
-  it('should return a list of images', async () => {
-    const {stdout} = await execa('node', ['quickstart.js']);
+  it('should return a list of images', () => {
+    const stdout = execSync('node quickstart.js');
     assert.match(stdout, /^{/);
   });
 });
 
 describe('from project', () => {
-  it('should return an image', async () => {
-    const {stdout} = await execa('node', ['fromProject.js']);
+  it('should return an image', () => {
+    const stdout = execSync('node fromProject.js');
     assert.match(stdout, /^{/);
   });
 });
 
 describe('latestSpecificOS', () => {
-  it('should return an image', async () => {
-    const {stdout} = await execa('node', ['latestSpecificOS.js']);
+  it('should return an image', () => {
+    const stdout = execSync('node latestSpecificOS.js');
     assert.match(stdout, /^{/);
   });
 });
 
 describe('specificOS', () => {
-  it('should return an image', async () => {
-    const {stdout} = await execa('node', ['specificOS.js']);
+  it('should return an image', () => {
+    const stdout = execSync('node specificOS.js');
     assert.match(stdout, /^{/);
   });
 });
