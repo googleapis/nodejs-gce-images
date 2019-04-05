@@ -43,7 +43,7 @@
   "author": "Stephen Sawchuk <sawchuk@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "arrify": "^1.0.0",
+    "arrify": "^2.0.0",
     "google-auth-library": "^3.0.0",
     "pify": "^4.0.1"
   },
