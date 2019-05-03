@@ -26,7 +26,7 @@ export interface Image {
   name: string;
   description: string;
   sourceType: string;
-  rawDisk: {source: string, containerType: string};
+  rawDisk: {source: string; containerType: string};
   status: string;
   archiveSizeBytes: number;
   diskSizeGb: number;
@@ -34,19 +34,19 @@ export interface Image {
 }
 
 export interface GetAllCallback {
-  (err: Error|null, images?: Image[]|ImagesMap): void;
+  (err: Error | null, images?: Image[] | ImagesMap): void;
 }
 
 export interface GetLatestCallback {
-  (err: Error|null, images?: Image|ImageMap): void;
+  (err: Error | null, images?: Image | ImageMap): void;
 }
 
-export type ImagesMap = {
-  [index: string]: Image[]
-};
-export type ImageMap = {
-  [index: string]: Image
-};
+export interface ImagesMap {
+  [index: string]: Image[];
+}
+export interface ImageMap {
+  [index: string]: Image;
+}
 
 interface ParsedArguments<O, C> {
   options: O;
@@ -69,23 +69,23 @@ export class GCEImages {
 
   private static OS_URLS = {
     centos:
-        'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
     'container-vm':
-        'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
     coreos:
-        'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
     debian:
-        'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
     redhat:
-        'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
     opensuse:
-        'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
     suse:
-        'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
     ubuntu:
-        'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
     windows:
-        'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
+      'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
   };
 
   private static OS_TO_URL: {[index: string]: string} = {
@@ -122,32 +122,47 @@ export class GCEImages {
    * @returns {Promise} if callback is omitted.
    */
   getAll(cb: GetAllCallback): void;
-  getAll(opts?: GetOptions|string): Promise<Image[]|ImagesMap>;
-  getAll(opts: GetOptions|string, cb: GetAllCallback): void;
-  getAll(optsOrCb?: GetOptions|string|GetAllCallback, cb?: GetAllCallback):
-      Promise<Image[]|ImagesMap>|void {
-    const {options, callback} =
-        this._parseArguments<GetOptions, GetAllCallback>(optsOrCb, cb);
+  getAll(opts?: GetOptions | string): Promise<Image[] | ImagesMap>;
+  getAll(opts: GetOptions | string, cb: GetAllCallback): void;
+  getAll(
+    optsOrCb?: GetOptions | string | GetAllCallback,
+    cb?: GetAllCallback
+  ): Promise<Image[] | ImagesMap> | void {
+    const {options, callback} = this._parseArguments<
+      GetOptions,
+      GetAllCallback
+    >(optsOrCb, cb);
     if (callback) {
       this.getAllAsync(options).then(
-          r => callback(null, r as Image[]), callback);
+        r => callback(null, r as Image[]),
+        callback
+      );
     } else {
       return this.getAllAsync(options);
     }
   }
 
-  private async getAllAsync(opts: GetOptions): Promise<Image[]|ImagesMap> {
+  private async getAllAsync(opts: GetOptions): Promise<Image[] | ImagesMap> {
     const osNamesToImages = new Map<string, Image[]>();
-    await Promise.all(opts.osNames!.map(async name => {
-      const singleOsOptions = Object.assign({}, opts, {osNames: [name]});
-      osNamesToImages.set(name, await this._getAllByOS(singleOsOptions) || []);
-    }));
-    const result = opts.osNames!.length === 1 ?
-        osNamesToImages.get(opts.osNames![0]) as Image[] :
-        Array.from(osNamesToImages).reduce((obj: ImagesMap, [key, value]) => {
-          obj[key] = value;
-          return obj;
-        }, {} as ImagesMap);
+    await Promise.all(
+      opts.osNames!.map(async name => {
+        const singleOsOptions = Object.assign({}, opts, {osNames: [name]});
+        osNamesToImages.set(
+          name,
+          (await this._getAllByOS(singleOsOptions)) || []
+        );
+      })
+    );
+    const result =
+      opts.osNames!.length === 1
+        ? (osNamesToImages.get(opts.osNames![0]) as Image[])
+        : Array.from(osNamesToImages).reduce(
+            (obj: ImagesMap, [key, value]) => {
+              obj[key] = value;
+              return obj;
+            },
+            {} as ImagesMap
+          );
     return result as Image[];
   }
 
@@ -162,13 +177,16 @@ export class GCEImages {
    * @returns {Promise} if callback is omitted.
    */
   getLatest(cb: GetLatestCallback): void;
-  getLatest(opts?: GetOptions|string): Promise<Image|ImageMap>;
-  getLatest(opts: GetOptions|string, cb: GetLatestCallback): void;
+  getLatest(opts?: GetOptions | string): Promise<Image | ImageMap>;
+  getLatest(opts: GetOptions | string, cb: GetLatestCallback): void;
   getLatest(
-      optsOrCb?: GetOptions|string|GetLatestCallback,
-      cb?: GetLatestCallback): Promise<Image|ImageMap>|void {
-    const {options, callback} =
-        this._parseArguments<GetOptions, GetLatestCallback>(optsOrCb, cb);
+    optsOrCb?: GetOptions | string | GetLatestCallback,
+    cb?: GetLatestCallback
+  ): Promise<Image | ImageMap> | void {
+    const {options, callback} = this._parseArguments<
+      GetOptions,
+      GetLatestCallback
+    >(optsOrCb, cb);
     if (callback) {
       this.getLatestAsync(options).then(r => callback(null, r), callback);
     } else {
@@ -176,9 +194,9 @@ export class GCEImages {
     }
   }
 
-  private async getLatestAsync(opts: GetOptions): Promise<Image|ImageMap> {
+  private async getLatestAsync(opts: GetOptions): Promise<Image | ImageMap> {
     const images = await this.getAllAsync(opts);
-    let image: Image|ImageMap|undefined;
+    let image: Image | ImageMap | undefined;
     if (Array.isArray(images)) {
       [image] = images.sort(this._sortNewestFirst);
     } else {
@@ -192,17 +210,19 @@ export class GCEImages {
     return image;
   }
 
-  async _getAllByOS(options: GetOptions&{osNames: string[]}): Promise<Image[]> {
+  async _getAllByOS(
+    options: GetOptions & {osNames: string[]}
+  ): Promise<Image[]> {
     const osParts = this._parseOsInput(options.osNames![0]);
     const reqOpts = {
       url: osParts.url,
       params: {} as {
-        [index: string]: string
-      }
+        [index: string]: string;
+      },
     };
     if (osParts.version.length > 0) {
       reqOpts.params.filter =
-          'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
+        'name eq ' + [osParts.name, osParts.version].join('-') + '.*';
     }
     const resp = await this._auth.request(reqOpts);
     let images = resp.data.items || [];
@@ -238,8 +258,10 @@ export class GCEImages {
       parsedArguments.callback = options;
     }
 
-    parsedArguments.options =
-        Object.assign(defaultOptions, parsedArguments.options);
+    parsedArguments.options = Object.assign(
+      defaultOptions,
+      parsedArguments.options
+    );
     parsedArguments.options.osNames = arrify(parsedArguments.options.osNames);
 
     return parsedArguments;
@@ -290,17 +312,18 @@ export class GCEImages {
     }
 
     if (hasProject) {
-      osParts.url = `https://www.googleapis.com/compute/v1/projects/${
-          project!}/global/images`;
+      osParts.url = `https://www.googleapis.com/compute/v1/projects/${project!}/global/images`;
     } else {
       osParts.url = GCEImages.OS_TO_URL[osParts.name];
     }
 
     if (!osParts.url) {
-      throw new Error([
-        'Cannot find ' + os,
-        'Expected one of: ' + Object.keys(GCEImages.OS_URLS).join(', '),
-      ].join('. '));
+      throw new Error(
+        [
+          'Cannot find ' + os,
+          'Expected one of: ' + Object.keys(GCEImages.OS_URLS).join(', '),
+        ].join('. ')
+      );
     }
 
     return osParts;
@@ -311,8 +334,10 @@ export class GCEImages {
   }
 
   _sortNewestFirst(imageA: Image, imageB: Image) {
-    return imageA.creationTimestamp < imageB.creationTimestamp ?
-        1 :
-        imageA.creationTimestamp > imageB.creationTimestamp ? -1 : 0;
+    return imageA.creationTimestamp < imageB.creationTimestamp
+      ? 1
+      : imageA.creationTimestamp > imageB.creationTimestamp
+      ? -1
+      : 0;
   }
 }
