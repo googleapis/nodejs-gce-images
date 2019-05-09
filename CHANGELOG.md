@@ -4,6 +4,25 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## [2.0.0](https://www.github.com/googleapis/gce-images/compare/v1.1.0...v2.0.0) (2019-05-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency google-auth-library to v4 ([#143](https://www.github.com/googleapis/gce-images/issues/143)) ([e24ff51](https://www.github.com/googleapis/gce-images/commit/e24ff51))
+* remove unused pify dependency ([#138](https://www.github.com/googleapis/gce-images/issues/138)) ([e189506](https://www.github.com/googleapis/gce-images/commit/e189506))
+* **deps:** update dependency arrify to v2 ([#130](https://www.github.com/googleapis/gce-images/issues/130)) ([0d6cec3](https://www.github.com/googleapis/gce-images/commit/0d6cec3))
+
+
+### Build System
+
+* upgrade engines field to >=8.10.0 ([#135](https://www.github.com/googleapis/gce-images/issues/135)) ([5bace32](https://www.github.com/googleapis/gce-images/commit/5bace32))
+
+
+### BREAKING CHANGES
+
+* upgrade engines field to >=8.10.0 (#135)
+
 ## v1.1.0
 
 02-05-2019 15:28 PST
@@ -88,4 +107,3 @@ const images = new GCEImages();
 - Add renovate.json
 - chore: fix the directory structure ([#12](https://github.com/GoogleCloudPlatform/gce-images/pull/12))
 - chore: make it OSPO compliant ([#10](https://github.com/GoogleCloudPlatform/gce-images/pull/10))
-
