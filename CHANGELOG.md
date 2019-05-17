@@ -4,6 +4,8 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [2.0.1](https://www.github.com/googleapis/gce-images/compare/v2.0.0...v2.0.1) (2019-05-17)
+
 ## [2.0.0](https://www.github.com/googleapis/gce-images/compare/v1.1.0...v2.0.0) (2019-05-09)
 
 
