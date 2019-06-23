@@ -11,6 +11,13 @@ import {GCEImages, Image} from '../src';
 const gceImages = new GCEImages();
 
 describe('gce-images', () => {
+  it('should use the configured apiEndpoint', () => {
+    const apiEndpoint = 'fake.local';
+    const images = new GCEImages({apiEndpoint});
+    const expectedPath = `https://${apiEndpoint}/compute/v1/projects/centos-cloud/global/images`;
+    assert.strictEqual(images.OS_URLS.centos, expectedPath);
+  });
+
   describe('_sortNewestFirst', () => {
     describe('when imageA.creationTimestamp is newer than imageB.creationTimestamp', () => {
       it('should return -1', () => {

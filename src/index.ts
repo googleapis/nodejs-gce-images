@@ -10,6 +10,11 @@ import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
 
 export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
+  /**
+   * The host name used to access the compute API.
+   * Defaults to `www.googleapis.com`.
+   */
+  apiEndpoint?: string;
 }
 
 export interface GetOptions {
@@ -53,64 +58,67 @@ interface ParsedArguments<O, C> {
   callback: C;
 }
 
+export interface OSUrls {
+  centos: string;
+  'container-vm': string;
+  coreos: string;
+  debian: string;
+  redhat: string;
+  opensuse: string;
+  suse: string;
+  ubuntu: string;
+  windows: string;
+}
+
 export class GCEImages {
   private _auth: GoogleAuth;
-  OS_URLS: typeof GCEImages.OS_URLS;
-  constructor(config?: GCEImagesConfig) {
-    config = config || {};
+  private apiEndpoint: string;
+  OS_URLS: OSUrls;
+  OS_TO_URL: {[index: string]: string};
+  constructor(config: GCEImagesConfig = {}) {
+    this.apiEndpoint = config.apiEndpoint || 'www.googleapis.com';
     config.scopes = ['https://www.googleapis.com/auth/compute'];
     this._auth = config.authClient || new GoogleAuth(config);
-    this.OS_URLS = GCEImages.OS_URLS;
+    const projectsPath = `https://${this.apiEndpoint}/compute/v1/projects`;
+    this.OS_URLS = {
+      centos: `${projectsPath}/centos-cloud/global/images`,
+      'container-vm': `${projectsPath}/cos-cloud/global/images`,
+      coreos: `${projectsPath}/coreos-cloud/global/images`,
+      debian: `${projectsPath}/debian-cloud/global/images`,
+      redhat: `${projectsPath}/rhel-cloud/global/images`,
+      opensuse: `${projectsPath}/opensuse-cloud/global/images`,
+      suse: `${projectsPath}/suse-cloud/global/images`,
+      ubuntu: `${projectsPath}/ubuntu-os-cloud/global/images`,
+      windows: `${projectsPath}/windows-cloud/global/images`,
+    };
+    this.OS_TO_URL = {
+      centos: this.OS_URLS.centos,
+      'centos-cloud': this.OS_URLS.centos,
+      'container-vm': this.OS_URLS['container-vm'],
+      'google-containers': this.OS_URLS['container-vm'],
+      cos: this.OS_URLS['container-vm'],
+      coreos: this.OS_URLS.coreos,
+      'coreos-cloud': this.OS_URLS.coreos,
+      debian: this.OS_URLS.debian,
+      'debian-cloud': this.OS_URLS.debian,
+      rhel: this.OS_URLS.redhat,
+      'rhel-cloud': this.OS_URLS.redhat,
+      redhat: this.OS_URLS.redhat,
+      opensuse: this.OS_URLS.opensuse,
+      'opensuse-cloud': this.OS_URLS.opensuse,
+      suse: this.OS_URLS.suse,
+      'suse-cloud': this.OS_URLS.suse,
+      ubuntu: this.OS_URLS.ubuntu,
+      'ubuntu-cloud': this.OS_URLS.ubuntu,
+      'ubuntu-os-cloud': this.OS_URLS.ubuntu,
+      windows: this.OS_URLS.windows,
+      'windows-cloud': this.OS_URLS.windows,
+    };
   }
 
   async getProjectId() {
     return this._auth.getProjectId();
   }
-
-  private static OS_URLS = {
-    centos:
-      'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
-    'container-vm':
-      'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
-    coreos:
-      'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
-    debian:
-      'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
-    redhat:
-      'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
-    opensuse:
-      'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
-    suse:
-      'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
-    ubuntu:
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
-    windows:
-      'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images',
-  };
-
-  private static OS_TO_URL: {[index: string]: string} = {
-    centos: GCEImages.OS_URLS.centos,
-    'centos-cloud': GCEImages.OS_URLS.centos,
-    'container-vm': GCEImages.OS_URLS['container-vm'],
-    'google-containers': GCEImages.OS_URLS['container-vm'],
-    cos: GCEImages.OS_URLS['container-vm'],
-    coreos: GCEImages.OS_URLS.coreos,
-    'coreos-cloud': GCEImages.OS_URLS.coreos,
-    debian: GCEImages.OS_URLS.debian,
-    'debian-cloud': GCEImages.OS_URLS.debian,
-    rhel: GCEImages.OS_URLS.redhat,
-    'rhel-cloud': GCEImages.OS_URLS.redhat,
-    redhat: GCEImages.OS_URLS.redhat,
-    opensuse: GCEImages.OS_URLS.opensuse,
-    'opensuse-cloud': GCEImages.OS_URLS.opensuse,
-    suse: GCEImages.OS_URLS.suse,
-    'suse-cloud': GCEImages.OS_URLS.suse,
-    ubuntu: GCEImages.OS_URLS.ubuntu,
-    'ubuntu-cloud': GCEImages.OS_URLS.ubuntu,
-    'ubuntu-os-cloud': GCEImages.OS_URLS.ubuntu,
-    windows: GCEImages.OS_URLS.windows,
-    'windows-cloud': GCEImages.OS_URLS.windows,
-  };
 
   /**
    * Get all available images.
@@ -240,7 +248,7 @@ export class GCEImages {
   _parseArguments<O, C>(options: any, callback: any): ParsedArguments<O, C> {
     const defaultOptions = {
       deprecated: false,
-      osNames: Object.keys(GCEImages.OS_URLS),
+      osNames: Object.keys(this.OS_URLS),
     };
 
     const parsedArguments = {
@@ -277,7 +285,7 @@ export class GCEImages {
     let project: string;
     let hasProject = false;
 
-    if (GCEImages.OS_TO_URL[os]) {
+    if (this.OS_TO_URL[os]) {
       osParts.name = os;
     } else {
       hasProject = /\//.test(os);
@@ -314,14 +322,14 @@ export class GCEImages {
     if (hasProject) {
       osParts.url = `https://www.googleapis.com/compute/v1/projects/${project!}/global/images`;
     } else {
-      osParts.url = GCEImages.OS_TO_URL[osParts.name];
+      osParts.url = this.OS_TO_URL[osParts.name];
     }
 
     if (!osParts.url) {
       throw new Error(
         [
           'Cannot find ' + os,
-          'Expected one of: ' + Object.keys(GCEImages.OS_URLS).join(', '),
+          'Expected one of: ' + Object.keys(this.OS_URLS).join(', '),
         ].join('. ')
       );
     }

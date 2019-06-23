@@ -5,7 +5,7 @@
  * See file LICENSE for detail or copy at https://opensource.org/licenses/MIT
  */
 
-const {assert} = require('chai');
+import {assert} from 'chai';
 import {GCEImages, Image, ImageMap, ImagesMap} from '../src';
 
 const gceImages = new GCEImages();
