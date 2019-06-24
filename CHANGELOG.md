@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## [2.1.0](https://www.github.com/googleapis/gce-images/compare/v2.0.0...v2.1.0) (2019-06-24)
+
+
+### Features
+
+* support apiEndpoint override ([#155](https://www.github.com/googleapis/gce-images/issues/155)) ([bb4037f](https://www.github.com/googleapis/gce-images/commit/bb4037f))
+
 ## [2.0.0](https://www.github.com/googleapis/gce-images/compare/v1.1.0...v2.0.0) (2019-05-09)
 
 
