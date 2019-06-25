@@ -41,5 +41,8 @@ module.exports = {
     sourceFiles: false,
     systemName: 'gce-images',
     theme: 'lumen'
+  },
+  markdown: {
+    idInHeadings: true
   }
 };
