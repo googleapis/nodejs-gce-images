@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [2.1.1](https://www.github.com/googleapis/gce-images/compare/v2.1.0...v2.1.1) (2019-06-26)
+
+
+### Bug Fixes
+
+* **docs:** make anchors work in jsdoc ([#157](https://www.github.com/googleapis/gce-images/issues/157)) ([1312f48](https://www.github.com/googleapis/gce-images/commit/1312f48))
+
 ## [2.1.0](https://www.github.com/googleapis/gce-images/compare/v2.0.0...v2.1.0) (2019-06-24)
 
 
