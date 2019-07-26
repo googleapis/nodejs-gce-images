@@ -44,7 +44,7 @@
   "license": "MIT",
   "dependencies": {
     "arrify": "^2.0.0",
-    "google-auth-library": "^4.0.0"
+    "google-auth-library": "^5.0.0"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.9",
