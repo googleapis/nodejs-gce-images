@@ -12,7 +12,7 @@ export interface GCEImagesConfig extends GoogleAuthOptions {
   authClient?: GoogleAuth;
   /**
    * The host name used to access the compute API.
-   * Defaults to `www.googleapis.com`.
+   * Defaults to `compute.googleapis.com`.
    */
   apiEndpoint?: string;
 }
@@ -76,7 +76,7 @@ export class GCEImages {
   OS_URLS: OSUrls;
   OS_TO_URL: {[index: string]: string};
   constructor(config: GCEImagesConfig = {}) {
-    this.apiEndpoint = config.apiEndpoint || 'www.googleapis.com';
+    this.apiEndpoint = config.apiEndpoint || 'compute.googleapis.com';
     config.scopes = ['https://www.googleapis.com/auth/compute'];
     this._auth = config.authClient || new GoogleAuth(config);
     const projectsPath = `https://${this.apiEndpoint}/compute/v1/projects`;
@@ -320,7 +320,7 @@ export class GCEImages {
     }
 
     if (hasProject) {
-      osParts.url = `https://www.googleapis.com/compute/v1/projects/${project!}/global/images`;
+      osParts.url = `https://compute.googleapis.com/compute/v1/projects/${project!}/global/images`;
     } else {
       osParts.url = this.OS_TO_URL[osParts.name];
     }
