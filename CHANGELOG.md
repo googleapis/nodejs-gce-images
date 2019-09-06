@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [2.1.3](https://www.github.com/googleapis/gce-images/compare/v2.1.2...v2.1.3) (2019-09-06)
+
+
+### Bug Fixes
+
+* use `compute.googleapis.com` as base URI ([#168](https://www.github.com/googleapis/gce-images/issues/168)) ([98c45e5](https://www.github.com/googleapis/gce-images/commit/98c45e5))
+
 ### [2.1.2](https://www.github.com/googleapis/gce-images/compare/v2.1.1...v2.1.2) (2019-07-29)
 
 
