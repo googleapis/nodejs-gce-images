@@ -17,7 +17,7 @@ images.getAll((err, images) => {
       [
         {
           kind: 'compute#image',
-          selfLink: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-6-v20150710',
+          selfLink: 'https://compute.googleapis.com/compute/v1/projects/centos-cloud/global/images/centos-6-v20150710',
           id: '2223645373384728207',
           creationTimestamp: '2015-07-13T13:32:32.483-07:00',
           name: 'centos-6-v20150710',
@@ -60,7 +60,7 @@ images.getLatest('ubuntu', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1504-vivid-v20150616a',
+    selfLink: 'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1504-vivid-v20150616a',
     id: '6610082300127119636',
     creationTimestamp: '2015-06-17T02:03:55.825-07:00',
     name: 'ubuntu-1504-vivid-v20150616a',
@@ -71,7 +71,7 @@ images.getLatest('ubuntu', (err, image) => {
     archiveSizeBytes: '806558757',
     diskSizeGb: '10',
     licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
+      'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
     ]
   }
 */
@@ -85,7 +85,7 @@ images.getLatest('your-project-id-or-name/ubuntu', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/your-project-id-or-name/global/images/ubuntu-1504-vivid-v20150616a',
+    selfLink: 'https://compute.googleapis.com/compute/v1/projects/your-project-id-or-name/global/images/ubuntu-1504-vivid-v20150616a',
     id: '6610082300127119636',
     creationTimestamp: '2015-06-17T02:03:55.825-07:00',
     name: 'ubuntu-1504-vivid-v20150616a',
@@ -96,7 +96,7 @@ images.getLatest('your-project-id-or-name/ubuntu', (err, image) => {
     archiveSizeBytes: '806558757',
     diskSizeGb: '10',
     licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
+      'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1504-vivid'
     ]
   }
 */
@@ -110,7 +110,7 @@ images.getLatest('ubuntu-1404', (err, image) => {
 /*
   image = {
     kind: 'compute#image',
-    selfLink: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1410-utopic-v20150625',
+    selfLink: 'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images/ubuntu-1410-utopic-v20150625',
     id: '7075003915689987469',
     creationTimestamp: '2015-07-09T10:46:10.424-07:00',
     name: 'ubuntu-1410-utopic-v20150625',
@@ -121,7 +121,7 @@ images.getLatest('ubuntu-1404', (err, image) => {
     archiveSizeBytes: '752874399',
     diskSizeGb: '10',
     licenses: [
-      'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1410-utopic'
+      'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/licenses/ubuntu-1410-utopic'
     ]
   }
 */
@@ -134,15 +134,15 @@ images.getLatest('ubuntu-1404', (err, image) => {
 images.OS_URLS; // also available on require('gce-images').OS_URLS;
 /*
   {
-    centos: 'https://www.googleapis.com/compute/v1/projects/centos-cloud/global/images',
-    'container-vm': 'https://www.googleapis.com/compute/v1/projects/cos-cloud/global/images',
-    coreos: 'https://www.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
-    debian: 'https://www.googleapis.com/compute/v1/projects/debian-cloud/global/images',
-    redhat: 'https://www.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
-    opensuse: 'https://www.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
-    suse: 'https://www.googleapis.com/compute/v1/projects/suse-cloud/global/images',
-    ubuntu: 'https://www.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
-    windows: 'https://www.googleapis.com/compute/v1/projects/windows-cloud/global/images'
+    centos: 'https://compute.googleapis.com/compute/v1/projects/centos-cloud/global/images',
+    'container-vm': 'https://compute.googleapis.com/compute/v1/projects/cos-cloud/global/images',
+    coreos: 'https://compute.googleapis.com/compute/v1/projects/coreos-cloud/global/images',
+    debian: 'https://compute.googleapis.com/compute/v1/projects/debian-cloud/global/images',
+    redhat: 'https://compute.googleapis.com/compute/v1/projects/rhel-cloud/global/images',
+    opensuse: 'https://compute.googleapis.com/compute/v1/projects/opensuse-cloud/global/images',
+    suse: 'https://compute.googleapis.com/compute/v1/projects/suse-cloud/global/images',
+    ubuntu: 'https://compute.googleapis.com/compute/v1/projects/ubuntu-os-cloud/global/images',
+    windows: 'https://compute.googleapis.com/compute/v1/projects/windows-cloud/global/images'
   }
 */
 ```
