@@ -164,13 +164,10 @@ export class GCEImages {
     const result =
       opts.osNames!.length === 1
         ? (osNamesToImages.get(opts.osNames![0]) as Image[])
-        : Array.from(osNamesToImages).reduce(
-            (obj: ImagesMap, [key, value]) => {
-              obj[key] = value;
-              return obj;
-            },
-            {} as ImagesMap
-          );
+        : Array.from(osNamesToImages).reduce((obj: ImagesMap, [key, value]) => {
+            obj[key] = value;
+            return obj;
+          }, {} as ImagesMap);
     return result as Image[];
   }
 
