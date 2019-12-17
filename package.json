@@ -39,7 +39,7 @@
     "coreos",
     "centos"
   ],
-  "repository": "googleapis/gce-images",
+  "repository": "googleapis/nodejs-gce-images",
   "author": "Stephen Sawchuk <sawchuk@gmail.com>",
   "license": "MIT",
   "dependencies": {
@@ -65,7 +65,7 @@
     "power-assert": "^1.6.0",
     "prettier": "^1.14.0",
     "source-map-support": "^0.5.6",
-    "typescript": "~3.6.0"
+    "typescript": "3.6.4"
   },
   "engines": {
     "node": ">=8.10.0"
