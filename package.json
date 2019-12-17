@@ -39,7 +39,7 @@
     "coreos",
     "centos"
   ],
-  "repository": "googleapis/gce-images",
+  "repository": "googleapis/nodejs-gce-images",
   "author": "Stephen Sawchuk <sawchuk@gmail.com>",
   "license": "MIT",
   "dependencies": {
