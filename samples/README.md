@@ -1,0 +1,98 @@
+[//]: # "This README.md file is auto-generated, all changes to this file will be lost."
+[//]: # "To regenerate it, use `python -m synthtool`."
+<img src="https://avatars2.githubusercontent.com/u/2810941?v=3&s=96" alt="Google Cloud Platform logo" title="Google Cloud Platform" align="right" height="96" width="96"/>
+
+# [GCE Images: Node.js Samples](https://github.com/googleapis/gce-images)
+
+[![Open in Cloud Shell][shell_img]][shell_link]
+
+
+
+## Table of Contents
+
+* [Before you begin](#before-you-begin)
+* [Samples](#samples)
+  * [From Project](#from-project)
+  * [Latest Specific OS](#latest-specific-os)
+  * [Quickstart](#quickstart)
+  * [Specific OS](#specific-os)
+
+## Before you begin
+
+Before running the samples, make sure you've followed the steps outlined in
+[Using the client library](https://github.com/googleapis/gce-images#using-the-client-library).
+
+## Samples
+
+
+
+### From Project
+
+View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/fromProject.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/fromProject.js,samples/README.md)
+
+__Usage:__
+
+
+`node fromProject.js`
+
+
+-----
+
+
+
+
+### Latest Specific OS
+
+View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/latestSpecificOS.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/latestSpecificOS.js,samples/README.md)
+
+__Usage:__
+
+
+`node latestSpecificOS.js`
+
+
+-----
+
+
+
+
+### Quickstart
+
+View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/quickstart.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/quickstart.js,samples/README.md)
+
+__Usage:__
+
+
+`node quickstart.js`
+
+
+-----
+
+
+
+
+### Specific OS
+
+View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/specificOS.js).
+
+[![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/specificOS.js,samples/README.md)
+
+__Usage:__
+
+
+`node specificOS.js`
+
+
+
+
+
+
+[shell_img]: https://gstatic.com/cloudssh/images/open-btn.png
+[shell_link]: https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/README.md
+[product-docs]: https://cloud.google.com/compute/docs/images
