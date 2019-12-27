@@ -24,7 +24,10 @@ const {GCEImages} = require('gce-images');
 
 async function getLatest() {
   const gceImages = new GCEImages();
-  const result = await gceImages.getLatest('ubuntu-1404');
+  const result = await gceImages.getLatest({
+    osNames: ['ubuntu-1404'],
+    deprecated: true,
+  });
   console.log(result);
 }
 
