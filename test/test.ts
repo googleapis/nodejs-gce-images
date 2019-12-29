@@ -18,6 +18,7 @@
  */
 
 import * as assert from 'assert';
+import {describe, it} from 'mocha';
 import {GCEImages, Image} from '../src';
 
 const gceImages = new GCEImages();
