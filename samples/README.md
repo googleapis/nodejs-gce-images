@@ -22,6 +22,12 @@
 Before running the samples, make sure you've followed the steps outlined in
 [Using the client library](https://github.com/googleapis/gce-images#using-the-client-library).
 
+`cd samples`
+
+`npm install`
+
+`cd ..`
+
 ## Samples
 
 
@@ -35,7 +41,7 @@ View the [source code](https://github.com/googleapis/gce-images/blob/master/samp
 __Usage:__
 
 
-`node fromProject.js`
+`node samples/fromProject.js`
 
 
 -----
@@ -52,7 +58,7 @@ View the [source code](https://github.com/googleapis/gce-images/blob/master/samp
 __Usage:__
 
 
-`node latestSpecificOS.js`
+`node samples/latestSpecificOS.js`
 
 
 -----
@@ -69,7 +75,7 @@ View the [source code](https://github.com/googleapis/gce-images/blob/master/samp
 __Usage:__
 
 
-`node quickstart.js`
+`node samples/quickstart.js`
 
 
 -----
@@ -86,7 +92,7 @@ View the [source code](https://github.com/googleapis/gce-images/blob/master/samp
 __Usage:__
 
 
-`node specificOS.js`
+`node samples/specificOS.js`
 
 
 
