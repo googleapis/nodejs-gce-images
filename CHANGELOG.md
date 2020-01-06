@@ -4,6 +4,15 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [2.1.4](https://www.github.com/googleapis/nodejs-gce-images/compare/v2.1.3...v2.1.4) (2020-01-06)
+
+
+### Bug Fixes
+
+* add repo metadata ([#183](https://www.github.com/googleapis/nodejs-gce-images/issues/183)) ([a85c7a8](https://www.github.com/googleapis/nodejs-gce-images/commit/a85c7a89b6dbfbfc432c4a298d7910add1dfa66d))
+* **build:** run synthtool with new repo name ([#191](https://www.github.com/googleapis/nodejs-gce-images/issues/191)) ([a695c78](https://www.github.com/googleapis/nodejs-gce-images/commit/a695c7879329ebf4765c4b03e0bc4da3ea6a20df))
+* **deps:** TypeScript 3.7.0 causes breaking change in typings ([#190](https://www.github.com/googleapis/nodejs-gce-images/issues/190)) ([4f15c1f](https://www.github.com/googleapis/nodejs-gce-images/commit/4f15c1f133346f20d388bf42728e2e91a8745831))
+
 ### [2.1.3](https://www.github.com/googleapis/gce-images/compare/v2.1.2...v2.1.3) (2019-09-06)
 
 
