@@ -12,7 +12,6 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-import {describe, it, before} from 'mocha';
 import {assert} from 'chai';
 import {GCEImages, Image, ImageMap, ImagesMap} from '../src';
 
