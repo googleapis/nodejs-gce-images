@@ -4,6 +4,29 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## [3.0.0](https://www.github.com/googleapis/nodejs-gce-images/compare/v2.1.4...v3.0.0) (2020-06-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* update to latest version of gts/typescript (#223)
+* drop Node 8 from engines field (#221)
+
+### Features
+
+* drop Node 8 from engines field ([#221](https://www.github.com/googleapis/nodejs-gce-images/issues/221)) ([66f0265](https://www.github.com/googleapis/nodejs-gce-images/commit/66f0265bddeb93d8c612b70d0d3cf386f5ce56b2))
+
+
+### Bug Fixes
+
+* **deps:** update dependency google-auth-library to v6 ([#220](https://www.github.com/googleapis/nodejs-gce-images/issues/220)) ([be859ff](https://www.github.com/googleapis/nodejs-gce-images/commit/be859ffce2c12da117a844146d18521dbe67424e))
+* apache license URL ([#468](https://www.github.com/googleapis/nodejs-gce-images/issues/468)) ([#227](https://www.github.com/googleapis/nodejs-gce-images/issues/227)) ([4a9744f](https://www.github.com/googleapis/nodejs-gce-images/commit/4a9744fb9a77801a3e2bf0b59fc38631dc402769))
+
+
+### Build System
+
+* update to latest version of gts/typescript ([#223](https://www.github.com/googleapis/nodejs-gce-images/issues/223)) ([df07287](https://www.github.com/googleapis/nodejs-gce-images/commit/df0728732054ad79c6ea2ac57a4eb0aec063c0dd))
+
 ### [2.1.4](https://www.github.com/googleapis/nodejs-gce-images/compare/v2.1.3...v2.1.4) (2020-01-06)
 
 
