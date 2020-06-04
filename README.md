@@ -194,10 +194,10 @@ See the above section on Authorization. This object is only necessary if automat
 
 ###### authConfig.authClient
 
-- Type: [`GoogleAuthConfig`](http://gitnpm.com/google-auth-library)
+- Type: [`GoogleAuthConfig`](https://github.com/googleapis/google-auth-library-nodejs)
 - *Optional*
 
-If you want to re-use an auth client from [google-auto-auth](http://gitnpm.com/google-auto-auth), pass an instance here.
+If you want to re-use an auth client from [google-auto-auth](https://github.com/stephenplusplus/google-auto-auth), pass an instance here.
 
 #### images.getAll([options], callback)
 #### images.getLatest([options], callback)

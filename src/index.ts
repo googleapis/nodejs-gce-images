@@ -31,7 +31,13 @@ export interface GetOptions {
 
 export interface Image {
   creationTimestamp: string;
-  deprecated: boolean;
+  deprecated: {
+    state: 'ACTIVE' | 'DEPRECATED' | 'OBSOLETE' | 'DELETED';
+    replacement: string;
+    deprecated: string;
+    obsolete: string;
+    deleted: string;
+  };
   kind: 'compute#image';
   selfLink: string;
   id: string;
@@ -43,6 +49,17 @@ export interface Image {
   archiveSizeBytes: number;
   diskSizeGb: number;
   licenses: string[];
+  family: string;
+  labelFingerprint: string;
+  guestOsFeatures: {
+    type:
+      | 'MULTI_IP_SUBNET'
+      | 'UEFI_COMPATIBLE'
+      | 'VIRTIO_SCSI_MULTIQUEUE'
+      | 'WINDOWS';
+  }[];
+  licenseCodes: string[];
+  storageLocations: string[];
 }
 
 export interface GetAllCallback {
