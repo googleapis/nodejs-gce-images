@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [3.0.1](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.0...v3.0.1) (2020-07-10)
+
+
+### Bug Fixes
+
+* typeo in nodejs .gitattribute ([#246](https://www.github.com/googleapis/nodejs-gce-images/issues/246)) ([8d690b1](https://www.github.com/googleapis/nodejs-gce-images/commit/8d690b1fd7570573765c842a3b3e4c6162535824))
+
 ## [3.0.0](https://www.github.com/googleapis/nodejs-gce-images/compare/v2.1.4...v3.0.0) (2020-06-04)
 
 
