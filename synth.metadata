@@ -4,14 +4,14 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/nodejs-gce-images.git",
-        "sha": "f58a1da41dba2d8ceae7ac7ee45e3bb8a7b67b92"
+        "sha": "a8396918bf46798e13340d2fe61783c0def3fcc9"
       }
     },
     {
       "git": {
         "name": "synthtool",
         "remote": "https://github.com/googleapis/synthtool.git",
-        "sha": "d82deccf657a66e31bd5da9efdb96c6fa322fc7e"
+        "sha": "21f1470ecd01424dc91c70f1a7c798e4e87d1eec"
       }
     }
   ]
