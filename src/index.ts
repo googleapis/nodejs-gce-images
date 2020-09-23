@@ -260,7 +260,7 @@ export class GCEImages {
     }
 
     // All CoreOS images are now deprecated, See:
-    // https://cloud.google.com/compute/docs/eol/coreOS 
+    // https://cloud.google.com/compute/docs/eol/coreOS
     if (images.length === 0 && !osParts.name.startsWith('coreos')) {
       throw new Error('Could not find a suitable image.');
     }
