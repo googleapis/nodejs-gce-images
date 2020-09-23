@@ -74,6 +74,8 @@ describe('system tests', () => {
       const images = (await gceImages.getLatest()) as ImageMap;
       assert.strictEqual(typeof images, 'object');
       Object.keys(images).forEach(osName => {
+        // https://cloud.google.com/compute/docs/eol/coreOS
+        if (osName.startsWith('coreos')) return;
         assert.strictEqual(typeof images[osName], 'object');
       });
     });
