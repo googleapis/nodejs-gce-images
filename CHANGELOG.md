@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [3.0.2](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.1...v3.0.2) (2020-09-23)
+
+
+### Bug Fixes
+
+* **coreos:** handle coreos deprecation ([#270](https://www.github.com/googleapis/nodejs-gce-images/issues/270)) ([38ec012](https://www.github.com/googleapis/nodejs-gce-images/commit/38ec012cb376083e20b1d3b726f7bc8044ba647e))
+
 ### [3.0.1](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.0...v3.0.1) (2020-07-10)
 
 

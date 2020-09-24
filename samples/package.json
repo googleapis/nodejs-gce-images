@@ -14,7 +14,7 @@
     "test": "mocha"
   },
   "dependencies": {
-    "gce-images": "^3.0.1"
+    "gce-images": "^3.0.2"
   },
   "devDependencies": {
     "chai": "^4.2.0",
