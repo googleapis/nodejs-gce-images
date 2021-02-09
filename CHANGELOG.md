@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [3.0.3](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.2...v3.0.3) (2021-02-09)
+
+
+### Bug Fixes
+
+* **deps:** update dependency google-auth-library to v7 ([#285](https://www.github.com/googleapis/nodejs-gce-images/issues/285)) ([913b976](https://www.github.com/googleapis/nodejs-gce-images/commit/913b97685ced8c5c05c9892be83d2a2dd5bca7b9))
+
 ### [3.0.2](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.1...v3.0.2) (2020-09-23)
 
 
