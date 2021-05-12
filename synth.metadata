@@ -4,7 +4,7 @@
       "git": {
         "name": ".",
         "remote": "https://github.com/googleapis/nodejs-gce-images.git",
-        "sha": "feedb5201b5a10940f3cfbf5bd093ff1aece2440"
+        "sha": "88567b79ec560c2c81f3313a87c9016d8d91fb9a"
       }
     },
     {
