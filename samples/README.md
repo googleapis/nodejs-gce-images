@@ -34,7 +34,7 @@ Before running the samples, make sure you've followed the steps outlined in
 
 ### From Project
 
-View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/fromProject.js).
+View the [source code](https://github.com/googleapis/gce-images/blob/main/samples/fromProject.js).
 
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/fromProject.js,samples/README.md)
 
@@ -51,7 +51,7 @@ __Usage:__
 
 ### Latest Specific OS
 
-View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/latestSpecificOS.js).
+View the [source code](https://github.com/googleapis/gce-images/blob/main/samples/latestSpecificOS.js).
 
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/latestSpecificOS.js,samples/README.md)
 
@@ -68,7 +68,7 @@ __Usage:__
 
 ### Quickstart
 
-View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/quickstart.js).
+View the [source code](https://github.com/googleapis/gce-images/blob/main/samples/quickstart.js).
 
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/quickstart.js,samples/README.md)
 
@@ -85,7 +85,7 @@ __Usage:__
 
 ### Specific OS
 
-View the [source code](https://github.com/googleapis/gce-images/blob/master/samples/specificOS.js).
+View the [source code](https://github.com/googleapis/gce-images/blob/main/samples/specificOS.js).
 
 [![Open in Cloud Shell][shell_img]](https://console.cloud.google.com/cloudshell/open?git_repo=https://github.com/googleapis/gce-images&page=editor&open_in_editor=samples/specificOS.js,samples/README.md)
 
