@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [3.0.4](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.3...v3.0.4) (2021-08-14)
+
+
+### Bug Fixes
+
+* **build:** migrate to using main branch ([#310](https://www.github.com/googleapis/nodejs-gce-images/issues/310)) ([327a5a4](https://www.github.com/googleapis/nodejs-gce-images/commit/327a5a4645c5a766fa9f089d7b4dfba31f10db86))
+
 ### [3.0.3](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.2...v3.0.3) (2021-02-09)
 
 
