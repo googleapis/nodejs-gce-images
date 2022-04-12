@@ -20,8 +20,8 @@ interface AuthOptions extends GoogleAuthOptions {
    * The host name used to access the compute API.
    * Defaults to `compute.googleapis.com`.
    */
-    apiEndpoint?: string;
-};
+  apiEndpoint?: string;
+}
 
 export type GCEImagesConfig = Omit<AuthOptions, 'authClient'> & {
   authClient?: GoogleAuth;
