@@ -15,13 +15,16 @@
 import arrify = require('arrify');
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
 
-export type GCEImagesConfig = Omit<GoogleAuthOptions, 'authClient'> & {
-  authClient?: GoogleAuth;
+interface AuthOptions extends GoogleAuthOptions {
   /**
    * The host name used to access the compute API.
    * Defaults to `compute.googleapis.com`.
    */
-  apiEndpoint?: string;
+    apiEndpoint?: string;
+};
+
+export type GCEImagesConfig = Omit<AuthOptions, 'authClient'> & {
+  authClient?: GoogleAuth;
 };
 
 export interface GetOptions {
@@ -105,7 +108,7 @@ export class GCEImages {
   private apiEndpoint: string;
   OS_URLS: OSUrls;
   OS_TO_URL: {[index: string]: string};
-  constructor(config: GCEImagesConfig | GoogleAuthOptions = {}) {
+  constructor(config: GCEImagesConfig | AuthOptions = {}) {
     this.apiEndpoint = config.apiEndpoint || 'compute.googleapis.com';
     config.scopes = ['https://www.googleapis.com/auth/compute'];
     this._auth = isGoogleAuthOptions(config)
