@@ -15,14 +15,17 @@
 import arrify = require('arrify');
 import {GoogleAuth, GoogleAuthOptions} from 'google-auth-library';
 
-export interface GCEImagesConfig extends GoogleAuthOptions {
-  authClient?: GoogleAuth;
+interface AuthOptions extends GoogleAuthOptions {
   /**
    * The host name used to access the compute API.
    * Defaults to `compute.googleapis.com`.
    */
   apiEndpoint?: string;
 }
+
+export type GCEImagesConfig = Omit<AuthOptions, 'authClient'> & {
+  authClient?: GoogleAuth;
+};
 
 export interface GetOptions {
   deprecated?: boolean;
@@ -94,15 +97,23 @@ export interface OSUrls {
   windows: string;
 }
 
+function isGoogleAuthOptions(
+  config: GoogleAuthOptions | GCEImagesConfig
+): config is GoogleAuthOptions {
+  return !config.authClient;
+}
+
 export class GCEImages {
   private _auth: GoogleAuth;
   private apiEndpoint: string;
   OS_URLS: OSUrls;
   OS_TO_URL: {[index: string]: string};
-  constructor(config: GCEImagesConfig = {}) {
+  constructor(config: GCEImagesConfig | AuthOptions = {}) {
     this.apiEndpoint = config.apiEndpoint || 'compute.googleapis.com';
     config.scopes = ['https://www.googleapis.com/auth/compute'];
-    this._auth = config.authClient || new GoogleAuth(config);
+    this._auth = isGoogleAuthOptions(config)
+      ? new GoogleAuth(config)
+      : config.authClient!;
     const projectsPath = `https://${this.apiEndpoint}/compute/v1/projects`;
     this.OS_URLS = {
       centos: `${projectsPath}/centos-cloud/global/images`,
