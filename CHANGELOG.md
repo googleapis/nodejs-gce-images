@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+### [3.0.5](https://github.com/googleapis/nodejs-gce-images/compare/v3.0.4...v3.0.5) (2022-04-13)
+
+
+### Bug Fixes
+
+* **typescript:** address bug with GoogleAuth types ([#336](https://github.com/googleapis/nodejs-gce-images/issues/336)) ([c78f532](https://github.com/googleapis/nodejs-gce-images/commit/c78f532a95bf90f04b2628d536abf5f23c0e41ee))
+
 ### [3.0.4](https://www.github.com/googleapis/nodejs-gce-images/compare/v3.0.3...v3.0.4) (2021-08-14)
 
 
