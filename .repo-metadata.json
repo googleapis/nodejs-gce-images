@@ -4,8 +4,9 @@
   "product_documentation": "https://cloud.google.com/compute/docs/images",
   "client_documentation": "https://cloud.google.com/nodejs/docs/reference/gce-images/latest",
   "issue_tracker": "https://github.com/googleapis/gce-images/issues",
-  "release_level": "ga",
+  "release_level": "stable",
   "language": "nodejs",
   "repo": "googleapis/gce-images",
-  "distribution_name": "gce-images"
+  "distribution_name": "gce-images",
+  "library_type": "GAPIC_AUTO"
 }
