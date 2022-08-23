@@ -4,6 +4,13 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## [4.0.1](https://github.com/googleapis/nodejs-gce-images/compare/v4.0.0...v4.0.1) (2022-08-23)
+
+
+### Bug Fixes
+
+* remove pip install statements ([#1546](https://github.com/googleapis/nodejs-gce-images/issues/1546)) ([#350](https://github.com/googleapis/nodejs-gce-images/issues/350)) ([5b5384c](https://github.com/googleapis/nodejs-gce-images/commit/5b5384cd4e366b17c0c826d5d1b48331b0a5a198))
+
 ## [4.0.0](https://github.com/googleapis/nodejs-gce-images/compare/v3.0.5...v4.0.0) (2022-05-20)
 
 
