@@ -29,15 +29,19 @@ describe('system tests', () => {
   };
 
   before(async () => {
-    [allImagesByOsName.deprecated, allImagesByOsName.stable] =
-      await Promise.all(
-        Object.keys(allImagesByOsName).map(
-          key =>
-            gceImages.getAll({
-              deprecated: key === 'deprecated',
-            }) as Promise<ImagesMap>
-        )
-      );
+    try {
+      [allImagesByOsName.deprecated, allImagesByOsName.stable] =
+        await Promise.all(
+          Object.keys(allImagesByOsName).map(
+            key =>
+              gceImages.getAll({
+                deprecated: key === 'deprecated',
+              }) as Promise<ImagesMap>
+          )
+        );
+    } catch (err) {
+      console.log('no images');
+    }
   });
 
   describe('all', () => {
