@@ -248,3 +248,7 @@ With `getLatest`:
 If only a single OS is being looked up, you will receive its metadata object back.
 
 If multiple OS names were given, you will receive an object keyed by the [OS name](#os-names). Each key will reference a metadata object.
+
+## Disclaimer
+
+This is not an officially supported Google product.

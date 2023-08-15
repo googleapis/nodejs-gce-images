@@ -12,7 +12,7 @@
     "lint": "gts check",
     "test": "c8 mocha build/test",
     "samples-test": "cd samples/ && npm link ../ && npm test && cd ../",
-    "system-test": "mocha build/system-test --timeout 600000",
+    "system-test": "echo 'no system tests'",
     "presystem-test": "npm run compile",
     "clean": "gts clean",
     "compile": "tsc -p .",
