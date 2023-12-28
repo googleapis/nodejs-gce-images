@@ -54,7 +54,7 @@
     "@types/mocha": "^9.0.0",
     "@types/node": "^20.4.9",
     "c8": "^8.0.1",
-    "chai": "^4.2.0",
+    "chai": "^5.0.0",
     "codecov": "^3.0.4",
     "gts": "^5.0.0",
     "intelli-espower-loader": "^1.0.1",
