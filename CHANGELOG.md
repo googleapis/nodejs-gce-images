@@ -4,6 +4,17 @@
 
 [1]: https://www.npmjs.com/package/gce-images?activeTab=versions
 
+## [5.0.0](https://github.com/googleapis/nodejs-gce-images/compare/v4.0.1...v5.0.0) (2024-02-06)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to Node 14 ([#377](https://github.com/googleapis/nodejs-gce-images/issues/377))
+
+### Miscellaneous Chores
+
+* Upgrade to Node 14 ([#377](https://github.com/googleapis/nodejs-gce-images/issues/377)) ([cc9d6ba](https://github.com/googleapis/nodejs-gce-images/commit/cc9d6ba13e29730234676e603f000584b99fde06))
+
 ## [4.0.1](https://github.com/googleapis/nodejs-gce-images/compare/v4.0.0...v4.0.1) (2022-08-23)
 
 
