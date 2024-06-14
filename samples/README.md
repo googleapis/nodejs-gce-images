@@ -6,7 +6,9 @@
 
 [![Open in Cloud Shell][shell_img]][shell_link]
 
+**_THIS REPOSITORY AND PACKAGE WILL BE DEPRECATED IN JULY 2024_**
 
+Get a list of globally available Google Compute Engine images.
 
 ## Table of Contents
 

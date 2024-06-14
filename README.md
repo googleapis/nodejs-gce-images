@@ -1,3 +1,5 @@
+**_THIS REPOSITORY AND PACKAGE WILL BE DEPRECATED IN JULY 2024_**
+
 # gce-images
 > Get a list of globally available Google Compute Engine images
 
