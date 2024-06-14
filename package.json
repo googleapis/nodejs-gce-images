@@ -49,7 +49,7 @@
     "google-auth-library": "^9.0.0"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "1.1.19",
+    "@compodoc/compodoc": "1.1.25",
     "@types/chai": "^4.1.7",
     "@types/mocha": "^9.0.0",
     "@types/node": "^20.4.9",
